@@ -61,7 +61,7 @@ src/
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Spekond-AI-flyAI/Spekond-AI-CompCode.git
    cd Spekond-AI-CompCode
    ```
 
