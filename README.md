@@ -33,6 +33,6 @@ Welcome to the **Spekond-AI Frontend Challenge**! This repository is dedicated t
 ### Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-organization/spekond-ai-frontend.git
+   git clone https://github.com/Spekond-AI-flyAI/Spekond-AI-CompCode.git
    cd spekond-ai-frontend
 
