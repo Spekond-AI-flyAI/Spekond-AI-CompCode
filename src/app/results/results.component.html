@@ -1,0 +1,404 @@
+<!-- Header Section -->
+<header class="bg-white shadow-sm border-b border-gray-200">
+  <div class="max-w-7xl mx-auto px-4">
+    <!-- Top Header -->
+    <div class="flex items-center justify-between py-3">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <div class="text-2xl font-bold">
+          <span class="text-red-600">jaco</span>
+        </div>
+        <span class="ml-4 text-gray-600">SEARCH</span>
+      </div>
+      
+      <!-- User Profile and Currency -->
+      <div class="flex items-center space-x-6">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+            <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <span class="text-sm text-gray-700">Welcome Joco dev</span>
+          <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        
+        <select class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+          <option>INR</option>
+        </select>
+        
+        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+          <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+          </svg>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Search Results Bar -->
+    <div class="bg-gray-300 py-3 text-center">
+      <span class="text-gray-700 font-medium">Search Results</span>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<div class="max-w-7xl mx-auto px-4 py-6">
+  <!-- Search Parameters Bar -->
+  <div class="bg-white rounded-lg shadow-lg p-4 mb-6">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center space-x-6 text-sm text-gray-700">
+        <span><strong>{{ searchCriteria?.fromAirport || 'BOM' }}</strong> → <strong>{{ searchCriteria?.toAirport || 'DXB' }}</strong></span>
+        <span><strong>{{ searchCriteria?.tripType || 'ONE WAY' }}</strong></span>
+        <span><strong>ADULTS - {{ searchCriteria?.passengers?.adult || 1 }}</strong></span>
+        <span><strong>CHILD - {{ searchCriteria?.passengers?.child || 0 }}</strong></span>
+        <span><strong>INFANT - {{ searchCriteria?.passengers?.infant || 0 }}</strong></span>
+        <span><strong>{{ searchCriteria?.class || 'ECONOMY' }}</strong></span>
+      </div>
+      <button (click)="goBackToSearch()" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center space-x-2">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+        </svg>
+        <span>MODIFY SEARCH</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="flex space-x-6">
+    <!-- Left Sidebar - Filters -->
+    <div class="w-80 flex-shrink-0">
+      <div class="bg-white rounded-lg shadow-lg p-6">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Filters</h3>
+        
+        <!-- STOP -->
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-700 mb-3">STOP</h4>
+          <div class="space-y-2">
+            <label class="flex items-center">
+              <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+              <span class="ml-2 text-gray-700">Non Stop</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+              <span class="ml-2 text-gray-700">1 Stop</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+              <span class="ml-2 text-gray-700">1+ Stop</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- AIRLINE -->
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-700 mb-3">AIRLINE</h4>
+          <div class="space-y-2">
+            <label class="flex items-center">
+              <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+              <span class="ml-2 text-gray-700">Sri Lankan Airlines</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+              <span class="ml-2 text-gray-700">Airindia (AI)</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+              <span class="ml-2 text-gray-700">Saudi Arabian Airlines (SV)</span>
+            </label>
+            <a href="#" class="text-red-600 text-sm hover:underline">+ 4 more</a>
+          </div>
+        </div>
+
+        <!-- AVOID TRANSIT -->
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-700 mb-3">AVOID TRANSIT</h4>
+          <div class="space-y-2">
+            <label class="flex items-center">
+              <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+              <span class="ml-2 text-gray-700">Bahrain</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+              <span class="ml-2 text-gray-700">France</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+              <span class="ml-2 text-gray-700">Germany</span>
+            </label>
+            <a href="#" class="text-red-600 text-sm hover:underline">+ 3 more</a>
+          </div>
+        </div>
+
+        <!-- DEPARTURE TIME -->
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-700 mb-3">DEPARTURE {{ searchCriteria?.fromAirport || 'BLR' }}-{{ searchCriteria?.toAirport || 'DXB' }}</h4>
+          <div class="text-sm text-gray-600">
+            <div class="flex justify-between mb-1">
+              <span>07-Aug 01:20</span>
+              <span>07-Aug 23:30</span>
+            </div>
+            <input type="range" min="0" max="100" class="w-full" value="50">
+          </div>
+        </div>
+
+        <!-- ARRIVAL TIME -->
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-700 mb-3">ARRIVAL {{ searchCriteria?.fromAirport || 'BLR' }}-{{ searchCriteria?.toAirport || 'DXB' }}</h4>
+          <div class="text-sm text-gray-600">
+            <div class="flex justify-between mb-1">
+              <span>07-Aug 03:50</span>
+              <span>07-Aug 02:25</span>
+            </div>
+            <input type="range" min="0" max="100" class="w-full" value="50">
+          </div>
+        </div>
+
+        <!-- DURATION -->
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-700 mb-3">DURATION {{ searchCriteria?.fromAirport || 'BLR' }}-{{ searchCriteria?.toAirport || 'DXB' }}</h4>
+          <div class="text-sm text-gray-600">
+            <div class="flex justify-between mb-1">
+              <span>03h 45m</span>
+              <span>29h 0m</span>
+            </div>
+            <input type="range" min="0" max="100" class="w-full" value="50">
+          </div>
+        </div>
+
+        <!-- FARE -->
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-700 mb-3">FARE</h4>
+          <div class="text-sm text-gray-600">
+            <div class="flex justify-between mb-1">
+              <span>€349</span>
+              <span>€950</span>
+            </div>
+            <input type="range" min="0" max="100" class="w-full" value="50">
+          </div>
+        </div>
+
+        <!-- TRANSIT AIRPORT -->
+        <div class="mb-6">
+          <h4 class="font-medium text-gray-700 mb-3">TRANSIT AIRPORT</h4>
+          <div class="space-y-2">
+            <label class="flex items-center">
+              <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+              <span class="ml-2 text-gray-700">AUH (Abu Dhabi)</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+              <span class="ml-2 text-gray-700">ADD (Addis Ababa Bole)</span>
+            </label>
+            <label class="flex items-center">
+              <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+              <span class="ml-2 text-gray-700">BAH (Bahrain)</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content - Flight Results -->
+    <div class="flex-1">
+      <!-- Sort By Section -->
+      <div class="bg-white rounded-lg shadow-lg p-4 mb-6">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-gray-700">Sort By:</span>
+          <select class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+            <option>Price ↓</option>
+            <option>Price ↑</option>
+            <option>Duration</option>
+            <option>Departure Time</option>
+          </select>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-4">
+          <div class="border-2 border-red-600 rounded-lg p-4 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-red-600 font-medium">Lowest</span>
+            </div>
+            <span class="text-gray-700">09h 40m | INR ₹30,458</span>
+          </div>
+          
+          <div class="border-2 border-gray-300 rounded-lg p-4 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+              </svg>
+              <span class="text-gray-600 font-medium">Quickest</span>
+            </div>
+            <span class="text-gray-700">09h 10m | INR ₹40,458</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div *ngIf="loading" class="text-center py-12">
+        <div class="inline-flex items-center space-x-3">
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+          <span class="text-lg text-gray-600">Loading flight results...</span>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="error && !loading" class="bg-red-50 border border-red-200 rounded-lg p-8 text-center">
+        <svg class="text-red-500 text-4xl mb-4 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+        <h2 class="text-xl font-semibold text-red-800 mb-2">Error Loading Results</h2>
+        <p class="text-red-600 mb-4">There was a problem loading the flight results. Please try again.</p>
+        <button (click)="loadFlightResults()" class="px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+          <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd" />
+          </svg>
+          Retry
+        </button>
+      </div>
+
+      <!-- Flight Results -->
+      <div *ngIf="!loading && !error">
+        <!-- No Results -->
+        <div *ngIf="filteredResults.length === 0" class="bg-white rounded-lg shadow-lg p-12 text-center">
+          <svg class="text-gray-400 text-6xl mb-4 mx-auto" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+          </svg>
+          <h2 class="text-2xl font-semibold text-gray-800 mb-2">No Flights Found</h2>
+          <p class="text-gray-600 mb-6">We couldn't find any flights matching your search criteria. Try adjusting your search parameters.</p>
+          <button (click)="goBackToSearch()" class="px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+            <svg class="w-4 h-4 mr-2 inline" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+            </svg>
+            Modify Search
+          </button>
+        </div>
+
+        <!-- Flight Listings -->
+        <div *ngIf="filteredResults.length > 0" class="space-y-4">
+          <div *ngFor="let result of filteredResults; trackBy: trackByResult" 
+               class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+            
+            <!-- Flight Header -->
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center space-x-4">
+                <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+                <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                </svg>
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-800">Sri Lankan Airlines</h3>
+                  <p class="text-sm text-gray-600">UL1174, UL225</p>
+                  <p class="text-sm text-gray-600">Layover - Colombo (CMB) - 07h 15m</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Flight Details -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+              <div class="text-center">
+                <div class="text-sm text-gray-500 mb-1">Departure</div>
+                <div class="text-lg font-semibold text-gray-800">09:40</div>
+                <div class="text-sm text-gray-600">{{ searchCriteria?.fromAirport || 'BLR' }}(Bengaluru)</div>
+                <div class="text-sm text-gray-600">07-Aug-2025</div>
+              </div>
+              
+              <div class="text-center">
+                <div class="flex items-center justify-center">
+                  <div class="flex-1 h-px bg-gray-300"></div>
+                  <svg class="text-blue-600 mx-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                  </svg>
+                  <div class="flex-1 h-px bg-gray-300"></div>
+                </div>
+                <div class="text-xs text-gray-500 mt-2">Total Duration</div>
+                <div class="text-sm font-medium text-gray-700">13h 30m</div>
+                <div class="text-xs text-gray-500">1 stop via (CMB)</div>
+              </div>
+              
+              <div class="text-center">
+                <div class="text-sm text-gray-500 mb-1">Arrival</div>
+                <div class="text-lg font-semibold text-gray-800">21:40</div>
+                <div class="text-sm text-gray-600">{{ searchCriteria?.toAirport || 'DXB' }}(Dubai)</div>
+                <div class="text-sm text-gray-600">07-Aug-2025</div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-4">
+                <button class="text-red-600 text-sm hover:underline flex items-center">
+                  Flight Details
+                  <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+              
+              <div class="flex space-x-3">
+                <button class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
+                  BOOK
+                </button>
+              </div>
+            </div>
+
+            <!-- Pricing Options -->
+            <div class="mt-4 grid grid-cols-2 gap-4">
+              <!-- Seamen Column -->
+              <div class="border border-red-200 rounded-lg p-3">
+                <div class="bg-red-600 text-white text-center py-1 rounded-t-lg -mt-3 -mx-3 mb-2 text-sm font-medium">
+                  Seamen
+                </div>
+                <div class="text-center">
+                  <input type="radio" name="fareType" class="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500">
+                  <div class="text-sm font-medium text-gray-800 mt-1">JOCO Economy</div>
+                  <div class="text-lg font-bold text-red-600">€349</div>
+                  <div class="text-xs text-gray-600">15 Kg</div>
+                  <div class="text-xs text-gray-600">9</div>
+                </div>
+              </div>
+              
+              <!-- Corporate Column -->
+              <div class="border border-gray-200 rounded-lg p-3">
+                <div class="bg-gray-600 text-white text-center py-1 rounded-t-lg -mt-3 -mx-3 mb-2 text-sm font-medium">
+                  Corporate
+                </div>
+                <div class="text-center">
+                  <input type="radio" name="fareType" class="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500">
+                  <div class="text-sm font-medium text-gray-800 mt-1">JOCO Economy</div>
+                  <div class="text-lg font-bold text-red-600">€349</div>
+                  <div class="text-xs text-gray-600">15 Kg</div>
+                  <div class="text-xs text-gray-600">9</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pagination -->
+        <div *ngIf="filteredResults.length > 0" class="mt-8 flex items-center justify-between">
+          <div class="flex space-x-2">
+            <button class="px-3 py-2 bg-red-600 text-white rounded-md">1</button>
+            <button class="px-3 py-2 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">2</button>
+            <button class="px-3 py-2 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">3</button>
+            <button class="px-3 py-2 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">4</button>
+            <button class="px-3 py-2 bg-white text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50">5</button>
+          </div>
+          
+          <div class="flex items-center space-x-2">
+            <span class="text-sm text-gray-600">Results per page:</span>
+            <select class="px-2 py-1 border border-gray-300 rounded-md text-sm">
+              <option>10</option>
+              <option>25</option>
+              <option>50</option>
+              <option>100</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
