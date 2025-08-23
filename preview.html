@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spekond AI Flight Search - Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .spekond-red { background-color: #DC2626; }
+        .spekond-red-light { background-color: #EF4444; }
+        .spekond-grey-50 { background-color: #F9FAFB; }
+        .spekond-grey-100 { background-color: #F3F4F6; }
+        .spekond-grey-200 { background-color: #E5E7EB; }
+        .spekond-grey-300 { background-color: #D1D5DB; }
+        .spekond-grey-400 { background-color: #9CA3AF; }
+        .spekond-grey-500 { background-color: #6B7280; }
+        .spekond-grey-600 { background-color: #4B5563; }
+        .spekond-grey-700 { background-color: #374151; }
+        .spekond-grey-800 { background-color: #1F2937; }
+        .spekond-grey-900 { background-color: #111827; }
+        .spekond-blue-500 { color: #3B82F6; }
+        .spekond-blue-600 { color: #2563EB; }
+        
+        .material-icons { font-size: 20px; }
+        .material-icons.small { font-size: 16px; }
+        
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #D1D5DB;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        .passenger-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .passenger-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+        
+        .passenger-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #DC2626;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-spekond-grey-50 to-spekond-grey-100 p-4">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-spekond-grey-800 mb-2">Spekond AI</h1>
+            <p class="text-spekond-grey-600 text-lg">Intelligent Flight Search</p>
+        </header>
+        
+        <!-- Flight Search Form -->
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-xl p-8 border border-spekond-grey-200">
+                
+                <!-- Trip Type Toggle -->
+                <div class="mb-8">
+                    <label class="block text-sm font-medium text-spekond-grey-700 mb-3">Trip Type</label>
+                    <div class="flex space-x-2">
+                        <button class="px-6 py-3 rounded-full font-medium transition-all duration-200 flex-1 bg-spekond-red text-white shadow-lg">
+                            One Way
+                        </button>
+                        <button class="px-6 py-3 rounded-full font-medium transition-all duration-200 flex-1 bg-spekond-grey-100 text-spekond-grey-700 hover:bg-spekond-grey-200">
+                            Round Trip
+                        </button>
+                        <button class="px-6 py-3 rounded-full font-medium transition-all duration-200 flex-1 bg-spekond-grey-100 text-spekond-grey-700 hover:bg-spekond-grey-200">
+                            Multi City
+                        </button>
+                    </div>
+                </div>
+
+                <!-- From/To Airports -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-spekond-grey-700 mb-2">
+                            <span class="material-icons spekond-blue-500 mr-2">flight_takeoff</span>
+                            From
+                        </label>
+                        <input type="text" class="form-input" value="BLR - Bengaluru" placeholder="e.g., BLR - Bengaluru">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-spekond-grey-700 mb-2">
+                            <span class="material-icons spekond-blue-500 mr-2">flight_land</span>
+                            To
+                        </label>
+                        <input type="text" class="form-input" value="DXB - Dubai" placeholder="e.g., DXB - Dubai">
+                    </div>
+                </div>
+
+                <!-- Dates -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-spekond-grey-700 mb-2">
+                            <span class="material-icons spekond-blue-500 mr-2">calendar_today</span>
+                            Departure
+                        </label>
+                        <input type="date" class="form-input" value="2025-08-07">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-spekond-grey-700 mb-2">
+                            <span class="material-icons spekond-blue-500 mr-2">calendar_today</span>
+                            Return
+                            <span class="text-spekond-grey-400 ml-1">(Optional)</span>
+                        </label>
+                        <input type="date" class="form-input" value="2025-08-14">
+                    </div>
+                </div>
+
+                <!-- Class and Passengers -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-spekond-grey-700 mb-2">
+                            <span class="material-icons spekond-blue-500 mr-2">airline_seat_recline_normal</span>
+                            Class
+                        </label>
+                        <select class="form-select">
+                            <option>Economy</option>
+                            <option>Premium Economy</option>
+                            <option>Business</option>
+                            <option>First Class</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-spekond-grey-700 mb-2">
+                            <span class="material-icons spekond-blue-500 mr-2">people</span>
+                            Passengers
+                        </label>
+                        <div class="border border-spekond-grey-300 rounded-lg p-4 bg-spekond-grey-50">
+                            <div class="space-y-3">
+                                <!-- Adult -->
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium text-spekond-grey-700">Adult</span>
+                                    <div class="flex items-center space-x-3">
+                                        <button class="passenger-btn bg-spekond-grey-200 hover:bg-spekond-grey-300">
+                                            <span class="material-icons small">remove</span>
+                                        </button>
+                                        <span class="w-8 text-center font-semibold text-spekond-grey-800">1</span>
+                                        <button class="passenger-btn bg-spekond-grey-200 hover:bg-spekond-grey-300">
+                                            <span class="material-icons small">add</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Child -->
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium text-spekond-grey-700">Child</span>
+                                    <div class="flex items-center space-x-3">
+                                        <button class="passenger-btn bg-spekond-grey-200 hover:bg-spekond-grey-300" disabled>
+                                            <span class="material-icons small">remove</span>
+                                        </button>
+                                        <span class="w-8 text-center font-semibold text-spekond-grey-800">0</span>
+                                        <button class="passenger-btn bg-spekond-grey-200 hover:bg-spekond-grey-300">
+                                            <span class="material-icons small">add</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Infant -->
+                                <div class="flex items-center justify-between">
+                                    <span class="text-sm font-medium text-spekond-grey-700">Infant</span>
+                                    <div class="flex items-center space-x-3">
+                                        <button class="passenger-btn bg-spekond-grey-200 hover:bg-spekond-grey-300" disabled>
+                                            <span class="material-icons small">remove</span>
+                                        </button>
+                                        <span class="w-8 text-center font-semibold text-spekond-grey-800">0</span>
+                                        <button class="passenger-btn bg-spekond-grey-200 hover:bg-spekond-grey-300">
+                                            <span class="material-icons small">add</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-3 pt-3 border-t border-spekond-grey-200">
+                                <span class="text-sm font-semibold text-spekond-grey-800">
+                                    Total: 1 passenger
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferred Airline and Transit Airport -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-spekond-grey-700 mb-2">
+                            <span class="material-icons spekond-blue-500 mr-2">airplanemode_active</span>
+                            Preferred Airline
+                        </label>
+                        <input type="text" class="form-input" placeholder="e.g., Emirates, Air India">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-spekond-grey-700 mb-2">
+                            <span class="material-icons spekond-blue-500 mr-2">transfer_within_a_station</span>
+                            Transit Airport
+                        </label>
+                        <input type="text" class="form-input" placeholder="e.g., DXB, SIN">
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="mb-8">
+                    <label class="block text-sm font-medium text-spekond-grey-700 mb-3">Filters</label>
+                    <div class="flex flex-wrap gap-4">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox">
+                            <span class="text-spekond-grey-700">Refundable</span>
+                        </label>
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox">
+                            <span class="text-spekond-grey-700">Non-stop</span>
+                        </label>
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox">
+                            <span class="material-icons spekond-blue-500 mr-2">transfer_within_a_station</span>
+                            <span class="text-spekond-grey-700">Split Ticket</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Search Button -->
+                <div class="text-center">
+                    <button class="bg-spekond-red hover:bg-spekond-red-light text-white font-bold py-4 px-12 rounded-xl text-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+                        <span class="material-icons mr-2">search</span>
+                        Search Flights
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- Footer Info -->
+        <div class="text-center mt-8 text-spekond-grey-600">
+            <p>This is a preview of the Spekond AI Flight Search UI</p>
+            <p class="text-sm mt-2">Built with Angular 17, Angular Material & TailwindCSS</p>
+        </div>
+    </div>
+</body>
+</html>
