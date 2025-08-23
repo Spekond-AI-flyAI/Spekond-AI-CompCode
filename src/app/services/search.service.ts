@@ -21,6 +21,12 @@ export interface SearchCriteria {
     splitTicket: boolean;
   };
   passengerType: string;
+  cityPairs?: Array<{
+    origin: string;
+    destination: string;
+    departureDate: string;
+    arrivalDate: string;
+  }>;
 }
 
 @Injectable({
