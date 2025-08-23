@@ -25,6 +25,8 @@ export class FlightSearchComponent implements OnInit {
   
   classes = ['Economy', 'Premium Economy', 'Business', 'First Class'];
   
+  countries = ['Indian', 'China'];
+  
   passengerCounts: PassengerCounts = {
     adult: 1,
     child: 0,
@@ -113,6 +115,11 @@ export class FlightSearchComponent implements OnInit {
   }
 
   selectTripType(type: string) {
+    // Prevent selecting Round Trip for seamen
+    if (type === 'Round Trip' && this.selectedPassengerType === 'seamen') {
+      return;
+    }
+    
     this.selectedTripType = type;
     if (type === 'One Way') {
       this.flightSearchForm.get('returnDate')?.clearValidators();
@@ -126,6 +133,15 @@ export class FlightSearchComponent implements OnInit {
 
   selectPassengerType(type: string) {
     this.selectedPassengerType = type;
+    
+    // If seamen is selected and current trip type is Round Trip, switch to One Way
+    if (type === 'seamen' && this.selectedTripType === 'Round Trip') {
+      this.selectTripType('One Way');
+    }
+  }
+
+  isRoundTripDisabled(): boolean {
+    return this.selectedPassengerType === 'seamen';
   }
 
   updatePassengerCount(type: keyof PassengerCounts, increment: boolean) {
