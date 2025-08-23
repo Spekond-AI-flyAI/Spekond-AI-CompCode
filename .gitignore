@@ -128,3 +128,4 @@ public
 # Temporary folders
 tmp/
 temp/
+.angular/cache/
