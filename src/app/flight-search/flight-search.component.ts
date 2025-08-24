@@ -69,6 +69,10 @@ export class FlightSearchComponent implements OnInit {
   // Unique, sorted IATA codes for dropdowns
   uniqueIataCodes: string[] = [];
   
+  // Cached filtered results for performance
+  private cachedDestinationCodes: string[] = [];
+  private cachedOrigin: string = '';
+  
   // Multicity trip management
   cityPairs: Array<{
     origin: string;
@@ -109,11 +113,18 @@ export class FlightSearchComponent implements OnInit {
     this.airportService.loadAirports().subscribe(airports => {
       this.airports = airports;
       
-      // Create unique, sorted IATA codes for dropdowns
+      // Create unique, sorted IATA codes for dropdowns - limit to major airports for performance
+      const majorAirports = airports
+        .filter(airport => 
+          airport.active === 1 && 
+          airport.iata_code && 
+          airport.iata_code.length === 3 &&
+          airport.classification <= 2 // Only major and medium airports
+        )
+        .slice(0, 500); // Limit to 500 airports for performance
+      
       this.uniqueIataCodes = [...new Set(
-        airports
-          .filter(airport => airport.iata_code && airport.iata_code.length === 3)
-          .map(airport => airport.iata_code)
+        majorAirports.map(airport => airport.iata_code)
       )].sort();
     });
   }
@@ -221,10 +232,21 @@ export class FlightSearchComponent implements OnInit {
 
   getAvailableDestinationCodes(): string[] {
     const selectedOrigin = this.flightSearchForm.get('fromAirport')?.value;
+    
+    // Return all codes if no origin selected
     if (!selectedOrigin) {
       return this.uniqueIataCodes;
     }
-    return this.uniqueIataCodes.filter(code => code !== selectedOrigin);
+    
+    // Use cached result if origin hasn't changed
+    if (this.cachedOrigin === selectedOrigin && this.cachedDestinationCodes.length > 0) {
+      return this.cachedDestinationCodes;
+    }
+    
+    // Filter and cache the result
+    this.cachedOrigin = selectedOrigin;
+    this.cachedDestinationCodes = this.uniqueIataCodes.filter(code => code !== selectedOrigin);
+    return this.cachedDestinationCodes;
   }
 
   getMinArrivalDate(): string {
@@ -240,6 +262,10 @@ export class FlightSearchComponent implements OnInit {
   onOriginChange() {
     const selectedOrigin = this.flightSearchForm.get('fromAirport')?.value;
     const selectedDestination = this.flightSearchForm.get('toAirport')?.value;
+    
+    // Clear cache to force recalculation
+    this.cachedDestinationCodes = [];
+    this.cachedOrigin = '';
     
     // If destination is the same as origin, clear it
     if (selectedDestination === selectedOrigin) {
@@ -275,18 +301,19 @@ export class FlightSearchComponent implements OnInit {
       return this.uniqueIataCodes;
     }
     
-    // Filter out the current origin and any origins used in other pairs
-    return this.uniqueIataCodes.filter(code => {
-      if (code === selectedOrigin) return false;
-      
-      // Check if this code is used as origin in any other pair
-      for (let i = 0; i < this.cityPairs.length; i++) {
-        if (i !== pairIndex && this.cityPairs[i].origin === code) {
-          return false;
-        }
+    // Create a Set of used origins for faster lookup
+    const usedOrigins = new Set<string>();
+    usedOrigins.add(selectedOrigin);
+    
+    // Add origins from other pairs
+    for (let i = 0; i < this.cityPairs.length; i++) {
+      if (i !== pairIndex && this.cityPairs[i].origin) {
+        usedOrigins.add(this.cityPairs[i].origin);
       }
-      return true;
-    });
+    }
+    
+    // Filter using Set for better performance
+    return this.uniqueIataCodes.filter(code => !usedOrigins.has(code));
   }
 
   onCityPairOriginChange(pairIndex: number) {
