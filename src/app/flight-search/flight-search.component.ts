@@ -85,7 +85,7 @@ export class FlightSearchComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private airportService: AirportService,
+    public airportService: AirportService,
     private searchService: SearchService,
     private router: Router
   ) {

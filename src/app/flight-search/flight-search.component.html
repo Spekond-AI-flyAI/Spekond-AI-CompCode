@@ -67,16 +67,16 @@
 <!-- Main Content -->
 <div class="max-w-7xl mx-auto px-4 py-6">
   <!-- Search Form Card -->
-  <div class="bg-white rounded-lg shadow-lg p-6">
+  <div class="bg-white rounded-lg shadow-lg p-5">
     <!-- Form Header -->
-    <div class="flex items-center justify-between mb-6">
+    <div class="flex items-center justify-between mb-4">
       <h1 class="text-2xl font-bold text-gray-800">Search Flights</h1>
       <a href="#" class="text-red-600 hover:text-red-700">Clear</a>
     </div>
 
     <form [formGroup]="flightSearchForm" (ngSubmit)="onSearch()">
       <!-- Passenger Type -->
-      <div class="mb-6">
+      <div class="mb-4">
         <label class="block text-sm font-medium text-gray-700 mb-3">Passenger Type</label>
         <div class="inline-flex bg-gray-100 rounded-md p-1">
           <button type="button" (click)="selectPassengerType('seamen')" [class]="selectedPassengerType==='seamen' ? 'bg-white text-gray-800' : 'text-gray-600'" class="px-3 py-1 rounded">Seamen</button>
@@ -131,9 +131,9 @@
       </div>
 
       <!-- Origin and Destination for One Way and Round Trip -->
-      <div class="mb-6" *ngIf="selectedTripType === 'One Way' || selectedTripType === 'Round Trip'">
-        <div class="space-y-4">
-          <div class="flex items-start space-x-4">
+      <div class="mb-4" *ngIf="selectedTripType === 'One Way' || selectedTripType === 'Round Trip'">
+        <div class="space-y-3">
+          <div class="flex items-start space-x-3">
             <!-- Origin and Destination -->
             <div class="flex-1 space-y-2">
               <div class="relative">
@@ -142,14 +142,14 @@
                     <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
                   </svg>
                 </div>
-                <input type="text"
+                <input type="text" matInput
                        [ngModel]="flightSearchForm.get('fromAirport')?.value"
                        (ngModelChange)="flightSearchForm.patchValue({fromAirport: $event}); onOriginChange()"
                        [matAutocomplete]="autoFrom"
                        placeholder="Type origin (e.g., BOM, Mumbai)"
                        class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
                 <mat-autocomplete #autoFrom="matAutocomplete" autoActiveFirstOption>
-                  <mat-option *ngFor="let a of (airportService.getAirportSuggestions(flightSearchForm.get('fromAirport')?.value) | async)" [value]="a.split(' - ')[0]">
+                  <mat-option *ngFor="let a of (airportService.getAirportSuggestions(flightSearchForm.get('fromAirport')?.value) | async)" [value]="a.split(' - ')[0]" (onSelectionChange)="$event.source.selected && flightSearchForm.patchValue({fromAirport: a.split(' - ')[0]}); onOriginChange()">
                     {{ a }}
                   </mat-option>
                 </mat-autocomplete>
@@ -160,14 +160,14 @@
                     <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
                   </svg>
                 </div>
-                <input type="text"
+                <input type="text" matInput
                        [ngModel]="flightSearchForm.get('toAirport')?.value"
                        (ngModelChange)="flightSearchForm.patchValue({toAirport: $event})"
                        [matAutocomplete]="autoTo"
                        placeholder="Type destination (e.g., DEL, Delhi)"
                        class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
                 <mat-autocomplete #autoTo="matAutocomplete" autoActiveFirstOption>
-                  <mat-option *ngFor="let a of (airportService.getAirportSuggestions(flightSearchForm.get('toAirport')?.value) | async)" [value]="a.split(' - ')[0]">
+                  <mat-option *ngFor="let a of (airportService.getAirportSuggestions(flightSearchForm.get('toAirport')?.value) | async)" [value]="a.split(' - ')[0]" (onSelectionChange)="$event.source.selected && flightSearchForm.patchValue({toAirport: a.split(' - ')[0]})">
                     {{ a }}
                   </mat-option>
                 </mat-autocomplete>
@@ -228,7 +228,7 @@
       </div>
 
       <!-- Arrival On Date for Round Trip -->
-      <div class="mb-6" *ngIf="selectedTripType === 'Round Trip'">
+      <div class="mb-4" *ngIf="selectedTripType === 'Round Trip'">
         <div class="flex items-center space-x-2">
           <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zM4 6h12v10H4V6z" clip-rule="evenodd" />
@@ -257,14 +257,14 @@
                     <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
                   </svg>
                 </div>
-                <input type="text"
+                <input type="text" matInput
                        [(ngModel)]="pair.origin"
                        (ngModelChange)="onCityPairOriginChange(i)"
                        [matAutocomplete]="autoFromMulti"
                        placeholder="Type origin (e.g., BOM, Mumbai)"
                        class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
                 <mat-autocomplete #autoFromMulti="matAutocomplete" autoActiveFirstOption>
-                  <mat-option *ngFor="let a of (airportService.getAirportSuggestions(pair.origin) | async)" [value]="a.split(' - ')[0]">
+                  <mat-option *ngFor="let a of (airportService.getAirportSuggestions(pair.origin) | async)" [value]="a.split(' - ')[0]" (onSelectionChange)="$event.source.selected && (pair.origin = a.split(' - ')[0])">
                     {{ a }}
                   </mat-option>
                 </mat-autocomplete>
@@ -275,13 +275,13 @@
                     <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
                   </svg>
                 </div>
-                <input type="text"
+                <input type="text" matInput
                        [(ngModel)]="pair.destination"
                        [matAutocomplete]="autoToMulti"
                        placeholder="Type destination (e.g., DEL, Delhi)"
                        class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
                 <mat-autocomplete #autoToMulti="matAutocomplete" autoActiveFirstOption>
-                  <mat-option *ngFor="let a of (airportService.getAirportSuggestions(pair.destination) | async)" [value]="a.split(' - ')[0]">
+                  <mat-option *ngFor="let a of (airportService.getAirportSuggestions(pair.destination) | async)" [value]="a.split(' - ')[0]" (onSelectionChange)="$event.source.selected && (pair.destination = a.split(' - ')[0])">
                     {{ a }}
                   </mat-option>
                 </mat-autocomplete>
@@ -360,7 +360,7 @@
       </div>
 
       <!-- Flight Preferences -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Class</label>
           <select [formControlName]="'class'" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
@@ -398,7 +398,7 @@
       </div>
 
       <!-- Passenger Counts -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Adult</label>
           <input type="number" 
@@ -426,7 +426,7 @@
       </div>
 
       <!-- Flight Options -->
-      <div class="mb-8">
+      <div class="mb-4">
         <div class="flex flex-wrap gap-6">
           <label class="flex items-center">
             <input type="checkbox" 
@@ -450,7 +450,7 @@
       </div>
 
       <!-- Search Button -->
-      <div>
+      <div class="mt-2">
         <button type="submit" 
                 [disabled]="flightSearchForm.invalid"
                 class="w-full py-3 bg-red-600 text-white font-medium rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed">
