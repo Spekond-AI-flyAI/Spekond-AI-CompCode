@@ -403,13 +403,10 @@
             <div class="flex items-center justify-between mb-4">
               <div class="flex items-center space-x-4">
                 <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
-                <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
-                </svg>
                 <div>
-                  <h3 class="text-lg font-semibold text-gray-800">Sri Lankan Airlines</h3>
-                  <p class="text-sm text-gray-600">UL1174, UL225</p>
-                  <p class="text-sm text-gray-600">Layover - Colombo (CMB) - 07h 15m</p>
+                  <h3 class="text-lg font-semibold text-gray-800">{{ getAirlineName(result) }}</h3>
+                  <p class="text-sm text-gray-600">{{ getFlightNumberString(result) }}</p>
+                  <p class="text-sm text-gray-600">{{ getLayoverText(result) }}</p>
                 </div>
               </div>
             </div>
@@ -418,9 +415,9 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
               <div class="text-center">
                 <div class="text-sm text-gray-500 mb-1">Departure</div>
-                <div class="text-lg font-semibold text-gray-800">09:40</div>
-                <div class="text-sm text-gray-600">{{ searchCriteria?.fromAirport || 'BLR' }}(Bengaluru)</div>
-                <div class="text-sm text-gray-600">07-Aug-2025</div>
+                <div class="text-lg font-semibold text-gray-800">{{ getDepartureTime(result) }}</div>
+                <div class="text-sm text-gray-600">{{ getDepartureAirport(result) }}</div>
+                <div class="text-sm text-gray-600">{{ getDepartureDate(result) }}</div>
               </div>
               
               <div class="text-center">
@@ -432,15 +429,15 @@
                   <div class="flex-1 h-px bg-gray-300"></div>
                 </div>
                 <div class="text-xs text-gray-500 mt-2">Total Duration</div>
-                <div class="text-sm font-medium text-gray-700">13h 30m</div>
-                <div class="text-xs text-gray-500">1 stop via (CMB)</div>
+                <div class="text-sm font-medium text-gray-700">{{ getDurationText(result) }}</div>
+                <div class="text-xs text-gray-500">{{ getStopsText(result) }}</div>
               </div>
               
               <div class="text-center">
                 <div class="text-sm text-gray-500 mb-1">Arrival</div>
-                <div class="text-lg font-semibold text-gray-800">21:40</div>
-                <div class="text-sm text-gray-600">{{ searchCriteria?.toAirport || 'DXB' }}(Dubai)</div>
-                <div class="text-sm text-gray-600">07-Aug-2025</div>
+                <div class="text-lg font-semibold text-gray-800">{{ getArrivalTime(result) }}</div>
+                <div class="text-sm text-gray-600">{{ getArrivalAirport(result) }}</div>
+                <div class="text-sm text-gray-600">{{ getArrivalDate(result) }}</div>
               </div>
             </div>
 
@@ -455,10 +452,9 @@
                 </button>
               </div>
               
-              <div class="flex space-x-3">
-                <button class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
-                  BOOK
-                </button>
+              <div class="flex space-x-3 items-center">
+                <div class="text-lg font-bold text-red-600">{{ getFareDisplay(result) }}</div>
+                <button class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">BOOK</button>
               </div>
             </div>
 

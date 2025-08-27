@@ -142,7 +142,7 @@ export class ResultsComponent implements OnInit {
     ).subscribe();
   }
 
-  private filterResults() {
+  filterResults() {
     console.log('filterResults called');
     if (!this.searchCriteria) {
       this.filteredResults = this.flightResults;
@@ -191,9 +191,9 @@ export class ResultsComponent implements OnInit {
     onePlus: false
   };
   fareMin = 0;
-  fareMax = Infinity as any as number;
+  fareMax = 200000; // sensible upper bound for slider/UI
   durationMinMin = 0; // minutes
-  durationMaxMin = Infinity as any as number; // minutes
+  durationMaxMin = 3000; // up to 50 hours
   depMinMinutes = 0; // 0..1439
   depMaxMinutes = 1439;
   arrMinMinutes = 0;
@@ -299,6 +299,111 @@ export class ResultsComponent implements OnInit {
       if (code) mid.push(code);
     }
     return Array.from(new Set(mid));
+  }
+
+  // ----- Presentation helpers used by template -----
+  getAirlineName(itin: any): string {
+    const segs = this.getAirSegments(itin);
+    const name = segs[0]?.airline?.airlineName || segs[0]?.operatingAirline?.airlineName;
+    return name || 'Airline';
+  }
+
+  getFlightNumberString(itin: any): string {
+    const segs = this.getAirSegments(itin);
+    const parts = segs.map((s: any) => `${s?.carrierCode || ''}${s?.flightNumber ? ' ' + s.flightNumber : ''}`.trim()).filter(Boolean);
+    return parts.join(', ');
+  }
+
+  getLayoverText(itin: any): string {
+    const mids = this.extractTransitAirports(itin);
+    const leg = this.getFirstLeg(itin);
+    const connStr = this.getNested<string>(leg, ['airSegmentList', 0, 'connectionTimeStr'], '');
+    if (mids.length > 0) {
+      return `Layover - ${mids.join(', ')}${connStr ? ' - ' + connStr : ''}`;
+    }
+    return 'Non-stop';
+  }
+
+  private toDate(value: any): Date | null {
+    const d = value ? new Date(value) : null;
+    return d && !isNaN(d.getTime()) ? d : null;
+  }
+
+  formatTime(value: any): string {
+    const d = this.toDate(value);
+    if (!d) return '';
+    const hh = d.getHours().toString().padStart(2, '0');
+    const mm = d.getMinutes().toString().padStart(2, '0');
+    return `${hh}:${mm}`;
+  }
+
+  formatDateYMD(value: any): string {
+    const d = this.toDate(value);
+    if (!d) return '';
+    const day = d.getDate().toString().padStart(2, '0');
+    const month = d.toLocaleString('en-US', { month: 'short' });
+    const year = d.getFullYear();
+    return `${day}-${month}-${year}`;
+  }
+
+  getDepartureTime(itin: any): string {
+    const segs = this.getAirSegments(itin);
+    return this.formatTime(segs[0]?.departureTime || segs[0]?.fromDate);
+    
+  }
+
+  getDepartureAirport(itin: any): string {
+    const segs = this.getAirSegments(itin);
+    return segs[0]?.fromLocation || '';
+  }
+
+  getDepartureDate(itin: any): string {
+    const segs = this.getAirSegments(itin);
+    return this.formatDateYMD(segs[0]?.departureTime || segs[0]?.fromDate);
+  }
+
+  getArrivalTime(itin: any): string {
+    const segs = this.getAirSegments(itin);
+    const last = segs[segs.length - 1];
+    return this.formatTime(last?.arrivalTime || last?.toDate);
+  }
+
+  getArrivalAirport(itin: any): string {
+    const segs = this.getAirSegments(itin);
+    const last = segs[segs.length - 1];
+    return last?.toLocation || '';
+  }
+
+  getArrivalDate(itin: any): string {
+    const segs = this.getAirSegments(itin);
+    const last = segs[segs.length - 1];
+    return this.formatDateYMD(last?.arrivalTime || last?.toDate);
+  }
+
+  formatDuration(mins: number | null): string {
+    if (mins === null) return '';
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return `${h}h ${m}m`;
+  }
+
+  getDurationText(itin: any): string {
+    return this.formatDuration(this.computeDurationMinutes(itin));
+  }
+
+  getStopsText(itin: any): string {
+    const stops = this.computeStops(itin);
+    if (stops === null) return '';
+    if (stops === 0) return 'Non-stop';
+    if (stops === 1) return '1 stop';
+    return `${stops} stops`;
+  }
+
+  getFareDisplay(itin: any): string {
+    const fare = this.computeFare(itin);
+    if (fare === null) return '';
+    // The data shows INR (gdsCurrency). Display with ₹
+    return `₹${Math.round(fare).toLocaleString('en-IN')}`;
   }
 
   // Filter predicate helpers
