@@ -78,6 +78,10 @@ export class ResultsComponent implements OnInit {
   emailAddress = '';
   phoneNumber = '';
 
+  // Per-itinerary selection state
+  fareTypeById: { [id: number]: 'seamen' | 'corporate' } = {};
+  selectedIds = new Set<number>();
+
   constructor(
     private http: HttpClient,
     private searchService: SearchService,
@@ -564,6 +568,50 @@ export class ResultsComponent implements OnInit {
     this.showPopup = true;
   }
 
+  // Selection helpers
+  toggleSelect(id: number, checked: boolean) {
+    if (checked) this.selectedIds.add(id); else this.selectedIds.delete(id);
+  }
+
+  private buildSelectedFlightFromItinerary(itin: any): FlightDetails {
+    const segs = this.getAirSegments(itin);
+    const first = segs[0];
+    const last = segs[segs.length - 1];
+    return {
+      id: itin.id || 0,
+      airline: this.getAirlineName(itin),
+      flightNumber: this.getFlightNumberString(itin),
+      departureTime: this.formatTime(first?.departureTime || first?.fromDate),
+      departureAirport: first?.fromLocation || '',
+      departureTerminal: first?.fromTerminal ? `Terminal ${first.fromTerminal}` : '',
+      departureDate: this.formatDateYMD(first?.departureTime || first?.fromDate),
+      arrivalTime: this.formatTime(last?.arrivalTime || last?.toDate),
+      arrivalAirport: last?.toLocation || '',
+      arrivalTerminal: last?.toTerminal ? `Terminal ${last.toTerminal}` : '',
+      arrivalDate: this.formatDateYMD(last?.arrivalTime || last?.toDate),
+      duration: this.getDurationText(itin),
+      layover: this.getStopsText(itin),
+      layoverDuration: '',
+      price: this.getFareDisplay(itin),
+      stops: this.computeStops(itin) ?? 0
+    };
+  }
+
+  onCopyItinerary(itin: any) {
+    this.selectedFlight = this.buildSelectedFlightFromItinerary(itin);
+    this.copyToClipboard();
+  }
+
+  onEmailItinerary(itin: any) {
+    this.selectedFlight = this.buildSelectedFlightFromItinerary(itin);
+    this.showEmailInput();
+  }
+
+  onWhatsAppItinerary(itin: any) {
+    this.selectedFlight = this.buildSelectedFlightFromItinerary(itin);
+    this.showWhatsAppInput();
+  }
+
   closePopup() {
     this.showPopup = false;
     this.selectedFlight = null;
@@ -632,6 +680,10 @@ export class ResultsComponent implements OnInit {
 
   private generateItineraryText(): string {
     if (!this.selectedFlight) return '';
+    const pax = this.searchCriteria?.passengers;
+    const paxSummary = pax ? `Passengers: Adult ${pax.adult} | Child ${pax.child} | Infant ${pax.infant}` : '';
+    const paxType = this.searchCriteria?.passengerType ? `Passenger Type: ${this.searchCriteria?.passengerType}` : '';
+    const fareType = this.fareTypeById[this.selectedFlight.id] ? `Fare Type: ${this.fareTypeById[this.selectedFlight.id]}` : '';
     
     return `Flight Itinerary Details
 
@@ -650,7 +702,10 @@ Date: ${this.selectedFlight.arrivalDate}
 
 Duration: ${this.selectedFlight.duration}
 Layover: ${this.selectedFlight.layover}
-Price: ${this.selectedFlight.price}`;
+Price: ${this.selectedFlight.price}
+${paxSummary}
+${paxType}
+${fareType}`;
   }
 
   // Navigation methods

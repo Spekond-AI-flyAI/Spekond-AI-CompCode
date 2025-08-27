@@ -436,9 +436,10 @@
               </div>
             </div>
 
-            <!-- Action Buttons -->
+            <!-- Action Row: checkbox + details + fare-type radios + book + share icons -->
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-3">
+                <input type="checkbox" (change)="toggleSelect(result.id, $event.target.checked)" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
                 <button (click)="openFlightDetails(result)" class="text-red-600 text-sm hover:underline flex items-center">
                   Flight Details
                   <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
@@ -448,11 +449,27 @@
               </div>
               
               <div class="flex items-center space-x-3">
-                <div class="flex items-center space-x-2">
-                  <span class="px-2 py-1 text-xs bg-red-600 text-white rounded">Seamen</span>
-                  <span class="px-2 py-1 text-xs bg-gray-600 text-white rounded">Corporate</span>
+                <div class="flex flex-col space-y-1">
+                  <label class="inline-flex items-center text-xs text-gray-700">
+                    <input type="radio" name="fareType{{result.id}}" (change)="fareTypeById[result.id]='seamen'" [checked]="fareTypeById[result.id]==='seamen'" class="mr-1"> Seamen
+                  </label>
+                  <label class="inline-flex items-center text-xs text-gray-700">
+                    <input type="radio" name="fareType{{result.id}}" (change)="fareTypeById[result.id]='corporate'" [checked]="fareTypeById[result.id]==='corporate'" class="mr-1"> Corporate
+                  </label>
                 </div>
                 <button class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">BOOK</button>
+              </div>
+
+              <div class="flex flex-col space-y-2 absolute right-3 bottom-3">
+                <button (click)="onCopyItinerary(result)" class="w-9 h-9 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200" title="Copy">
+                  <svg class="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20"><path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/><path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"/></svg>
+                </button>
+                <button (click)="onEmailItinerary(result)" class="w-9 h-9 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200" title="Email">
+                  <svg class="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+                </button>
+                <button (click)="onWhatsAppItinerary(result)" class="w-9 h-9 bg-green-100 rounded-full flex items-center justify-center hover:bg-green-200" title="WhatsApp">
+                  <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
+                </button>
               </div>
             </div>
             
