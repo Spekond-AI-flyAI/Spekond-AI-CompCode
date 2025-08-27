@@ -107,69 +107,24 @@ export class ResultsComponent implements OnInit {
     this.loading = true;
     this.error = false;
 
-    // Use mock data for testing instead of loading from JSON file
-    const mockResults: FlightItinerary[] = [
-      {
-        id: 1,
-        priceOnlyPTC: false,
-        fromLocation: 'BOM',
-        toLocation: 'DEL',
-        splitPricingInformationList: [],
-        groupingMap: {},
-        seamen: true,
-        fareSourceCode: 'TEST',
-        pricingMessage: 'Test flight',
-        pricingInformation: {}
-      },
-      {
-        id: 2,
-        priceOnlyPTC: false,
-        fromLocation: 'BOM',
-        toLocation: 'DEL',
-        splitPricingInformationList: [],
-        groupingMap: {},
-        seamen: true,
-        fareSourceCode: 'TEST',
-        pricingMessage: 'Test flight 2',
-        pricingInformation: {}
-      },
-      {
-        id: 3,
-        priceOnlyPTC: false,
-        fromLocation: 'BOM',
-        toLocation: 'DEL',
-        splitPricingInformationList: [],
-        groupingMap: {},
-        seamen: true,
-        fareSourceCode: 'TEST',
-        pricingMessage: 'Test flight 3',
-        pricingInformation: {}
-      }
-    ];
-
-    console.log('Using mock flight results:', mockResults);
-    this.flightResults = mockResults;
-    this.filterResults();
-    this.loading = false;
-
-    // Comment out the HTTP call for now
-    /*
+    // Load all itineraries from the JSON file
     this.http.get<FlightItinerary[]>('assets/FlightItineraryList.json').pipe(
       map(results => {
-        console.log('Flight results loaded:', results);
-        this.flightResults = results;
+        console.log('Flight results loaded:', results?.length);
+        this.flightResults = Array.isArray(results) ? results : [];
         this.filterResults();
         this.loading = false;
-        return results;
+        return this.flightResults;
       }),
       catchError(error => {
         console.error('Error loading flight results:', error);
         this.loading = false;
         this.error = true;
+        this.flightResults = [];
+        this.filteredResults = [];
         return of([]);
       })
     ).subscribe();
-    */
   }
 
   private filterResults() {
@@ -196,9 +151,8 @@ export class ResultsComponent implements OnInit {
       return true;
     });
 
-    // Limit results for performance
-    this.filteredResults = this.filteredResults.slice(0, 50);
-    console.log('Filtered results:', this.filteredResults.length);
+    // Show all results
+    console.log('Filtered results (all):', this.filteredResults.length);
   }
 
   private hasStops(itinerary: FlightItinerary): boolean {
