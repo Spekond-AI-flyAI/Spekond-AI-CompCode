@@ -332,24 +332,24 @@
         </div>
         
         <div class="grid grid-cols-2 gap-4">
-          <div class="border-2 border-red-600 rounded-lg p-4 flex items-center justify-between">
+          <div class="border-2 border-red-600 rounded-lg p-3 flex items-center justify-between">
             <div class="flex items-center space-x-2">
-              <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 20 20">
+              <svg class="w-4 h-4 text-red-600" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
               </svg>
               <span class="text-red-600 font-medium">Lowest</span>
             </div>
-            <span class="text-gray-700">09h 40m | INR ₹30,458</span>
+            <span class="text-gray-700 text-sm">09h 40m | INR ₹30,458</span>
           </div>
           
-          <div class="border-2 border-gray-300 rounded-lg p-4 flex items-center justify-between">
+          <div class="border-2 border-gray-300 rounded-lg p-3 flex items-center justify-between">
             <div class="flex items-center space-x-2">
-              <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+              <svg class="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
               </svg>
               <span class="text-gray-600 font-medium">Quickest</span>
             </div>
-            <span class="text-gray-700">09h 10m | INR ₹40,458</span>
+            <span class="text-gray-700 text-sm">09h 10m | INR ₹40,458</span>
           </div>
         </div>
       </div>
@@ -395,13 +395,13 @@
         </div>
 
         <!-- Flight Listings -->
-        <div *ngIf="filteredResults.length > 0" class="space-y-4">
+        <div *ngIf="filteredResults.length > 0" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <div *ngFor="let result of paginatedResults; trackBy: trackByResult" 
-               class="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+               class="bg-white rounded-lg shadow-lg p-4 hover:shadow-xl transition-shadow">
             
             <!-- Flight Header -->
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center space-x-4">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center space-x-3">
                 <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
                 <div>
                   <h3 class="text-lg font-semibold text-gray-800">{{ getAirlineName(result) }}</h3>
@@ -412,7 +412,7 @@
             </div>
 
             <!-- Flight Details -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-3">
               <div class="text-center">
                 <div class="text-sm text-gray-500 mb-1">Departure</div>
                 <div class="text-lg font-semibold text-gray-800">{{ getDepartureTime(result) }}</div>
@@ -423,7 +423,7 @@
               <div class="text-center">
                 <div class="flex items-center justify-center">
                   <div class="flex-1 h-px bg-gray-300"></div>
-                  <svg class="text-blue-600 mx-2" fill="currentColor" viewBox="0 0 20 20">
+                  <svg class="text-blue-600 mx-2 w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
                   </svg>
                   <div class="flex-1 h-px bg-gray-300"></div>
@@ -443,7 +443,7 @@
 
             <!-- Action Buttons -->
             <div class="flex items-center justify-between">
-              <div class="flex items-center space-x-4">
+              <div class="flex items-center space-x-3">
                 <button (click)="openFlightDetails(result)" class="text-red-600 text-sm hover:underline flex items-center">
                   Flight Details
                   <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
@@ -452,42 +452,16 @@
                 </button>
               </div>
               
-              <div class="flex space-x-3 items-center">
+              <div class="flex items-center space-x-3">
                 <div class="text-lg font-bold text-red-600">{{ getFareDisplay(result) }}</div>
-                <button class="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">BOOK</button>
+                <div class="flex items-center space-x-2">
+                  <span class="px-2 py-1 text-xs bg-red-600 text-white rounded">Seamen</span>
+                  <span class="px-2 py-1 text-xs bg-gray-600 text-white rounded">Corporate</span>
+                </div>
+                <button class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">BOOK</button>
               </div>
             </div>
-
-            <!-- Pricing Options -->
-            <div class="mt-4 grid grid-cols-2 gap-4">
-              <!-- Seamen Column -->
-              <div class="border border-red-200 rounded-lg p-3">
-                <div class="bg-red-600 text-white text-center py-1 rounded-t-lg -mt-3 -mx-3 mb-2 text-sm font-medium">
-                  Seamen
-                </div>
-                <div class="text-center">
-                  <input type="radio" name="fareType" class="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500">
-                  <div class="text-sm font-medium text-gray-800 mt-1">JOCO Economy</div>
-                  <div class="text-lg font-bold text-red-600">€349</div>
-                  <div class="text-xs text-gray-600">15 Kg</div>
-                  <div class="text-xs text-gray-600">9</div>
-                </div>
-              </div>
-              
-              <!-- Corporate Column -->
-              <div class="border border-gray-200 rounded-lg p-3">
-                <div class="bg-gray-600 text-white text-center py-1 rounded-t-lg -mt-3 -mx-3 mb-2 text-sm font-medium">
-                  Corporate
-                </div>
-                <div class="text-center">
-                  <input type="radio" name="fareType" class="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500">
-                  <div class="text-sm font-medium text-gray-800 mt-1">JOCO Economy</div>
-                  <div class="text-lg font-bold text-red-600">€349</div>
-                  <div class="text-xs text-gray-600">15 Kg</div>
-                  <div class="text-xs text-gray-600">9</div>
-                </div>
-              </div>
-            </div>
+            
           </div>
         </div>
 

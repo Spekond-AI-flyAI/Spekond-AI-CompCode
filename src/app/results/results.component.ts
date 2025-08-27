@@ -447,7 +447,8 @@ export class ResultsComponent implements OnInit {
   private passesTransitAirportFilter(itin: any): boolean {
     if (this.selectedTransitAirports.size === 0) return true;
     const mids = this.extractTransitAirports(itin);
-    return mids.some(c => this.selectedTransitAirports.has(c));
+    // Avoid itineraries that include any selected transit airports
+    return !mids.some(c => this.selectedTransitAirports.has(c));
   }
 
   getTotalPassengers(): number {
