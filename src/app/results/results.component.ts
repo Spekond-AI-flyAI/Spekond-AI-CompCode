@@ -537,37 +537,31 @@ export class ResultsComponent implements OnInit {
 
   // Popup methods
   openFlightDetails(flight: any) {
-    console.log('openFlightDetails called with flight:', flight);
-    console.log('filteredResults length:', this.filteredResults.length);
-    
-    // Create a simple flight details object
+    // Map real itinerary data into a display model
+    const segs = this.getAirSegments(flight);
+    const first = segs[0];
+    const last = segs[segs.length - 1];
+    const airlines = this.getAirlineName(flight);
+    const flightNums = this.getFlightNumberString(flight);
     this.selectedFlight = {
-      id: flight.id || 1,
-      airline: 'IndiGo',
-      flightNumber: '6E 762',
-      departureTime: '06:00',
-      departureAirport: this.searchCriteria?.fromAirport || 'BOM',
-      departureTerminal: 'Terminal 2',
-      departureDate: 'Fri, 29-Aug-2025',
-      arrivalTime: '07:55',
-      arrivalAirport: this.searchCriteria?.toAirport || 'DEL',
-      arrivalTerminal: 'Terminal 1',
-      arrivalDate: 'Fri, 29-Aug-2025',
-      duration: '01h 55m',
-      layover: 'Non-stop',
-      layoverDuration: '0h 0m',
-      price: '€349',
-      stops: 0
+      id: flight.id || 0,
+      airline: airlines,
+      flightNumber: flightNums,
+      departureTime: this.formatTime(first?.departureTime || first?.fromDate),
+      departureAirport: first?.fromLocation || '',
+      departureTerminal: first?.fromTerminal ? `Terminal ${first.fromTerminal}` : '',
+      departureDate: this.formatDateYMD(first?.departureTime || first?.fromDate),
+      arrivalTime: this.formatTime(last?.arrivalTime || last?.toDate),
+      arrivalAirport: last?.toLocation || '',
+      arrivalTerminal: last?.toTerminal ? `Terminal ${last.toTerminal}` : '',
+      arrivalDate: this.formatDateYMD(last?.arrivalTime || last?.toDate),
+      duration: this.getDurationText(flight),
+      layover: this.getStopsText(flight),
+      layoverDuration: '',
+      price: this.getFareDisplay(flight),
+      stops: this.computeStops(flight) ?? 0
     };
-    
-    console.log('selectedFlight created:', this.selectedFlight);
     this.showPopup = true;
-    console.log('showPopup set to:', this.showPopup);
-    
-    // Force change detection
-    setTimeout(() => {
-      console.log('After timeout - showPopup:', this.showPopup);
-    }, 100);
   }
 
   closePopup() {
