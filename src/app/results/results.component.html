@@ -1,51 +1,156 @@
 <!-- Header Section -->
-<header class="bg-white shadow-sm border-b border-gray-200">
-  <div class="max-w-7xl mx-auto px-4">
+<header class="bg-gradient-to-r from-orange-50 via-orange-100 to-orange-200 shadow-xl border-b border-orange-300/50 backdrop-blur-sm">
+  <div class="max-w-7xl mx-auto px-6">
     <!-- Top Header -->
-    <div class="flex items-center justify-between py-3">
+    <div class="flex items-center justify-between py-6">
       <!-- Logo -->
-      <div class="flex items-center">
-        <div class="text-2xl font-bold">
-          <span class="text-red-600">jaco</span>
+      <div class="flex items-center group">
+        <div class="text-3xl font-bold tracking-wide transition-all duration-300 group-hover:scale-105">
+          <span class="bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">JOCO</span>
         </div>
-        <span class="ml-4 text-gray-600">SEARCH</span>
+        <div class="ml-3 text-xs font-medium text-orange-600 tracking-wider opacity-90 transition-all duration-300 group-hover:opacity-100">
+          PASSION. BEYOND OCEAN.
+        </div>
       </div>
+      
+      <!-- Navigation -->
+      <nav class="flex items-center space-x-8">
+        <a href="#" class="relative text-orange-800 font-semibold tracking-wide transition-all duration-300 hover:text-orange-900 group px-3 py-2 rounded-lg hover:bg-orange-100/50">
+          <span class="relative z-10">SEARCH</span>
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-600 to-orange-700 transition-all duration-300 group-hover:w-full"></span>
+        </a>
+        <a (click)="goToMyBookings()" class="relative text-orange-700 font-medium tracking-wide transition-all duration-300 hover:text-orange-800 group cursor-pointer px-3 py-2 rounded-lg hover:bg-orange-100/50">
+          <span class="relative z-10">MY BOOKINGS</span>
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-orange-600 transition-all duration-300 group-hover:w-full"></span>
+        </a>
+        <a (click)="goToCrewTracking()" class="relative text-orange-700 font-medium tracking-wide transition-all duration-300 hover:text-orange-800 group cursor-pointer px-3 py-2 rounded-lg hover:bg-orange-100/50">
+          <span class="relative z-10">CREW TRACKING</span>
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-orange-600 transition-all duration-300 group-hover:w-full"></span>
+        </a>
+      </nav>
       
       <!-- User Profile and Currency -->
       <div class="flex items-center space-x-6">
         <div class="flex items-center space-x-2">
-          <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-            <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+          <div class="w-8 h-8 bg-gradient-to-br from-orange-300 to-orange-400 rounded-full flex items-center justify-center shadow-md transition-all duration-300 hover:shadow-lg hover:scale-105 ring-2 ring-orange-200 hover:ring-orange-300">
+            <svg class="w-5 h-5 text-orange-700 transition-colors duration-300 group-hover:text-orange-800" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
             </svg>
           </div>
-          <span class="text-sm text-gray-700">Welcome Joco dev</span>
+          <span class="text-sm text-gray-700">Vaso Nikola</span>
           <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
           </svg>
         </div>
         
-        <select class="px-3 py-1 border border-gray-300 rounded-md text-sm">
+        <select class="px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
           <option>INR</option>
         </select>
         
-        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-          <svg class="w-5 h-5 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+        <div class="w-8 h-8 bg-gradient-to-br from-orange-300 to-orange-400 rounded-full flex items-center justify-center shadow-md transition-all duration-300 hover:shadow-lg hover:scale-105 cursor-pointer group ring-2 ring-orange-200 hover:ring-orange-300">
+          <svg class="w-5 h-5 text-orange-700 transition-colors duration-300 group-hover:text-orange-800" fill="currentColor" viewBox="0 0 20 20">
             <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
           </svg>
         </div>
       </div>
     </div>
     
-    <!-- Search Results Bar -->
-    <div class="bg-gray-300 py-3 text-center">
-      <span class="text-gray-700 font-medium">Search Results</span>
+    <!-- Progress Indicator -->
+    <div class="flex items-center space-x-6 py-4 border-t border-orange-300/30">
+      <div class="flex items-center space-x-3">
+        <div class="w-4 h-4 bg-gradient-to-r from-orange-600 to-orange-700 rounded-full shadow-sm animate-pulse ring-2 ring-orange-200"></div>
+        <div class="w-4 h-4 bg-orange-300 rounded-full shadow-sm transition-all duration-300 ring-2 ring-orange-200/50"></div>
+        <div class="w-4 h-4 bg-orange-300 rounded-full shadow-sm transition-all duration-300 ring-2 ring-orange-200/50"></div>
+      </div>
+      <span class="text-sm font-medium text-orange-700 tracking-wide">Search Results</span>
     </div>
   </div>
 </header>
 
+<!-- Modify Search Form (Unfolds from top) -->
+<div *ngIf="showModifySearch" class="bg-white shadow-lg border-b border-gray-200 transform transition-all duration-500 ease-in-out">
+  <div class="max-w-7xl mx-auto px-4 py-6">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+      <!-- Form Header -->
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-gray-800">MODIFY SEARCH</h1>
+        <button (click)="toggleModifySearch()" class="text-red-600 hover:text-red-700 text-xl font-bold">
+          ×
+        </button>
+      </div>
+
+      <!-- Search Form Content -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Trip Type -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Trip Type</label>
+          <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <option [value]="searchCriteria?.tripType">{{ searchCriteria?.tripType || 'ONE WAY' }}</option>
+            <option value="Round Trip">Round Trip</option>
+            <option value="Multi City">Multi City</option>
+          </select>
+        </div>
+
+        <!-- From Airport -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">From</label>
+          <input type="text" [value]="searchCriteria?.fromAirport" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+        </div>
+
+        <!-- To Airport -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">To</label>
+          <input type="text" [value]="searchCriteria?.toAirport" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+        </div>
+
+        <!-- Departure Date -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Departure Date</label>
+          <input type="date" [value]="searchCriteria?.departureDate?.toISOString().split('T')[0]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+        </div>
+
+        <!-- Class -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Class</label>
+          <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+            <option [value]="searchCriteria?.class">{{ searchCriteria?.class || 'ECONOMY' }}</option>
+            <option value="BUSINESS">Business</option>
+            <option value="FIRST">First</option>
+          </select>
+        </div>
+
+        <!-- Passengers -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Passengers</label>
+          <div class="flex space-x-2">
+            <input type="number" [value]="searchCriteria?.passengers?.adult" min="1" class="w-16 px-2 py-2 border border-gray-300 rounded-md text-center">
+            <input type="number" [value]="searchCriteria?.passengers?.child" min="0" class="w-16 px-2 py-2 border border-gray-300 rounded-md text-center">
+            <input type="number" [value]="searchCriteria?.passengers?.infant" min="0" class="w-16 px-2 py-2 border border-gray-300 rounded-md text-center">
+          </div>
+          <div class="text-xs text-gray-500 mt-1">Adult | Child | Infant</div>
+        </div>
+      </div>
+
+      <!-- Search Button -->
+      <div class="mt-6">
+        <button class="px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+          SEARCH FLIGHTS
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Main Content -->
 <div class="max-w-7xl mx-auto px-4 py-6">
+  <!-- Test Button for Popup -->
+  <div class="mb-4 p-4 bg-yellow-100 border border-yellow-300 rounded-lg">
+    <button (click)="testPopup()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+      🧪 TEST POPUP - Click to show popup
+    </button>
+    <span class="ml-4 text-sm text-gray-600">Debug: showPopup = {{ showPopup }}, filteredResults = {{ filteredResults.length }}</span>
+  </div>
+
   <!-- Search Parameters Bar -->
   <div class="bg-white rounded-lg shadow-lg p-4 mb-6">
     <div class="flex items-center justify-between">
@@ -57,7 +162,7 @@
         <span><strong>INFANT - {{ searchCriteria?.passengers?.infant || 0 }}</strong></span>
         <span><strong>{{ searchCriteria?.class || 'ECONOMY' }}</strong></span>
       </div>
-      <button (click)="goBackToSearch()" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center space-x-2">
+      <button (click)="toggleModifySearch()" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center space-x-2">
         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
         </svg>
@@ -330,7 +435,7 @@
             <!-- Action Buttons -->
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-4">
-                <button class="text-red-600 text-sm hover:underline flex items-center">
+                <button (click)="openFlightDetails(result)" class="text-red-600 text-sm hover:underline flex items-center">
                   Flight Details
                   <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -397,6 +502,182 @@
               <option>100</option>
             </select>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Flight Details Popup -->
+<div *ngIf="showPopup" (click)="onPopupOverlayClick($event)" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 popup-overlay flight-popup">
+  <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto flight-popup-content">
+    <!-- Header Bar -->
+    <div class="bg-gray-200 px-6 py-3 flex items-center justify-between rounded-t-lg">
+      <div class="text-sm text-gray-700">
+        <span class="font-medium">DETAILS :</span>
+        <span class="mx-2">|</span>
+        <span>CORPORATE</span>
+        <span class="mx-2">|</span>
+        <span>{{ searchCriteria?.tripType || 'ONE WAY' }}</span>
+        <span class="mx-2">|</span>
+        <span>ADULT -{{ searchCriteria?.passengers?.adult || 1 }}</span>
+        <span class="mx-2">|</span>
+        <span>CHILD -{{ searchCriteria?.passengers?.child || 0 }}</span>
+        <span class="mx-2">|</span>
+        <span>INFANT -{{ searchCriteria?.passengers?.infant || 0 }}</span>
+        <span class="mx-2">|</span>
+        <span>{{ searchCriteria?.class || 'ECONOMY' }}</span>
+      </div>
+      <button (click)="closePopup()" class="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center hover:bg-gray-500 transition-colors popup-close-btn">
+        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Main Itinerary Section -->
+    <div class="p-6">
+      <div class="text-center mb-6">
+        <div class="text-lg font-medium text-gray-800 mb-2">Depart on: {{ selectedFlight?.departureDate }}</div>
+      </div>
+
+      <!-- Flight Route -->
+      <div class="flex items-center justify-between mb-6">
+        <!-- Departure -->
+        <div class="flex-1 text-center">
+          <div class="text-2xl font-bold text-gray-800 mb-1">{{ selectedFlight?.departureTime }} {{ selectedFlight?.departureAirport }}</div>
+          <div class="text-sm text-gray-600 mb-1">{{ selectedFlight?.departureDate }}</div>
+          <div class="text-sm text-gray-600">{{ searchCriteria?.fromAirport || 'BOM' }} Airport, Terminal 2</div>
+        </div>
+
+        <!-- Airplane Icon -->
+        <div class="flex flex-col items-center mx-4">
+          <svg class="w-8 h-8 text-gray-500 mb-2" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+          </svg>
+          <div class="text-sm font-medium text-gray-700">{{ selectedFlight?.flightNumber }}</div>
+          <div class="text-sm text-gray-600">{{ selectedFlight?.airline }}</div>
+        </div>
+
+        <!-- Arrival -->
+        <div class="flex-1 text-center">
+          <div class="text-2xl font-bold text-gray-800 mb-1">{{ selectedFlight?.arrivalTime }} {{ selectedFlight?.arrivalAirport }}</div>
+          <div class="text-sm text-gray-600 mb-1">{{ selectedFlight?.arrivalDate }}</div>
+          <div class="text-sm text-gray-600">{{ searchCriteria?.toAirport || 'DEL' }} Airport, Terminal 1</div>
+        </div>
+
+        <!-- Duration -->
+        <div class="flex flex-col items-center ml-4">
+          <svg class="w-6 h-6 text-gray-500 mb-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+          </svg>
+          <div class="text-sm font-medium text-gray-700">Duration</div>
+          <div class="text-sm text-gray-600">{{ selectedFlight?.duration }}</div>
+        </div>
+      </div>
+
+      <div class="text-center mb-6">
+        <div class="text-lg font-medium text-gray-800 mb-2">Arrive on: {{ selectedFlight?.arrivalDate }}</div>
+      </div>
+
+      <!-- Total Journey Time Bar -->
+      <div class="bg-gray-200 py-3 px-4 rounded-lg">
+        <div class="text-center text-gray-700">
+          <span class="font-medium">Total Journey Time: </span>
+          <span>{{ selectedFlight?.duration }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="px-6 pb-6">
+      <div class="grid grid-cols-3 gap-4">
+        <button class="bg-white border-2 border-gray-300 rounded-lg p-4 hover:border-red-500 transition-colors action-btn">
+          <div class="text-center">
+            <svg class="w-8 h-8 text-gray-600 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.093a3.35 3.35 0 00-1.98-.875l-.123-.001a1 1 0 000 1.999h.123a1.35 1.35 0 011.98.875L11 9.093V5z" clip-rule="evenodd" />
+            </svg>
+            <div class="text-sm font-medium text-gray-700">Fare Details & Rules</div>
+          </div>
+        </button>
+
+        <button class="bg-white border-2 border-gray-300 rounded-lg p-4 hover:border-red-500 transition-colors action-btn">
+          <div class="text-center">
+            <svg class="w-8 h-8 text-gray-600 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+            </svg>
+            <div class="text-sm font-medium text-gray-700">Baggage Allowance</div>
+          </div>
+        </button>
+
+        <button class="bg-white border-2 border-gray-300 rounded-lg p-4 hover:border-red-500 transition-colors action-btn">
+          <div class="text-center">
+            <svg class="w-8 h-8 text-gray-600 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4zM18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" />
+            </svg>
+            <div class="text-sm font-medium text-gray-700">Visa Rules</div>
+          </div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Notification Icons Inside Popup -->
+    <div class="px-6 pb-6">
+      <div class="flex items-center justify-center space-x-6">
+        <button (click)="copyToClipboard()" class="flex flex-col items-center space-y-2 text-red-600 hover:text-red-700 transition-colors" title="Copy to clipboard">
+          <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+              <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+            </svg>
+          </div>
+          <span class="text-sm font-medium">Copy to Clipboard</span>
+        </button>
+
+        <button (click)="showEmailInput()" class="flex flex-col items-center space-y-2 text-red-600 hover:text-red-700 transition-colors" title="Send via email">
+          <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+            </svg>
+          </div>
+          <span class="text-sm font-medium">Send Email</span>
+        </button>
+
+        <button (click)="showWhatsAppInput()" class="flex flex-col items-center space-y-2 text-green-600 hover:text-green-700 transition-colors" title="Send via WhatsApp">
+          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center hover:bg-green-200 transition-colors">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+            </svg>
+          </div>
+          <span class="text-sm font-medium">Send WhatsApp</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Email Modal -->
+    <div *ngIf="showEmailModal" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+      <div class="bg-white rounded-lg p-6 w-96">
+        <h3 class="text-lg font-semibold mb-4">Send Itinerary via Email</h3>
+        <input type="email" [(ngModel)]="emailAddress" placeholder="Enter email address" 
+               class="w-full px-3 py-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-red-500">
+        <div class="flex space-x-3">
+          <button (click)="sendEmail()" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">Send</button>
+          <button (click)="showEmailModal = false" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- WhatsApp Modal -->
+    <div *ngIf="showWhatsAppModal" class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
+      <div class="bg-white rounded-lg p-6 w-96">
+        <h3 class="text-lg font-semibold mb-4">Send Itinerary via WhatsApp</h3>
+        <input type="tel" [(ngModel)]="phoneNumber" placeholder="Enter phone number" 
+               class="w-full px-3 py-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-red-500">
+        <div class="flex space-x-3">
+          <button (click)="sendWhatsApp()" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Send</button>
+          <button (click)="showWhatsAppModal = false" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400">Cancel</button>
         </div>
       </div>
     </div>

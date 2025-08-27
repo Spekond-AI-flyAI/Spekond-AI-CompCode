@@ -19,6 +19,25 @@ export interface FlightItinerary {
   pricingInformation: any;
 }
 
+export interface FlightDetails {
+  id: number;
+  airline: string;
+  flightNumber: string;
+  departureTime: string;
+  departureAirport: string;
+  departureTerminal: string;
+  departureDate: string;
+  arrivalTime: string;
+  arrivalAirport: string;
+  arrivalTerminal: string;
+  arrivalDate: string;
+  duration: string;
+  layover?: string;
+  layoverDuration?: string;
+  price?: string;
+  stops?: number;
+}
+
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
@@ -30,6 +49,19 @@ export class ResultsComponent implements OnInit {
   filteredResults: FlightItinerary[] = [];
   loading = true;
   error = false;
+  
+  // Popup properties
+  showPopup = false;
+  selectedFlight: FlightDetails | null = null;
+  
+  // Modify search properties
+  showModifySearch = false;
+  
+  // Share properties
+  showEmailModal = false;
+  showWhatsAppModal = false;
+  emailAddress = '';
+  phoneNumber = '';
 
   constructor(
     private http: HttpClient,
@@ -41,20 +73,90 @@ export class ResultsComponent implements OnInit {
     this.searchCriteria = this.searchService.getSearchCriteria();
     
     if (!this.searchCriteria) {
-      // No search criteria, redirect back to search
-      this.router.navigate(['/search']);
-      return;
+      // Create default search criteria for testing instead of redirecting
+      console.log('No search criteria found, creating default for testing');
+      this.searchCriteria = {
+        tripType: 'ONE WAY',
+        fromAirport: 'BOM',
+        toAirport: 'DEL',
+        departureDate: new Date('2025-08-30'),
+        returnDate: null,
+        class: 'ECONOMY',
+        passengers: {
+          adult: 1,
+          child: 1,
+          infant: 0
+        },
+        preferredAirline: '',
+        transitAirport: '',
+        filters: {
+          refundable: false,
+          nonStop: false,
+          splitTicket: false
+        },
+        passengerType: 'seamen'
+      };
+      console.log('Default search criteria created:', this.searchCriteria);
     }
 
     this.loadFlightResults();
   }
 
   loadFlightResults() {
+    console.log('loadFlightResults called');
     this.loading = true;
     this.error = false;
 
+    // Use mock data for testing instead of loading from JSON file
+    const mockResults: FlightItinerary[] = [
+      {
+        id: 1,
+        priceOnlyPTC: false,
+        fromLocation: 'BOM',
+        toLocation: 'DEL',
+        splitPricingInformationList: [],
+        groupingMap: {},
+        seamen: true,
+        fareSourceCode: 'TEST',
+        pricingMessage: 'Test flight',
+        pricingInformation: {}
+      },
+      {
+        id: 2,
+        priceOnlyPTC: false,
+        fromLocation: 'BOM',
+        toLocation: 'DEL',
+        splitPricingInformationList: [],
+        groupingMap: {},
+        seamen: true,
+        fareSourceCode: 'TEST',
+        pricingMessage: 'Test flight 2',
+        pricingInformation: {}
+      },
+      {
+        id: 3,
+        priceOnlyPTC: false,
+        fromLocation: 'BOM',
+        toLocation: 'DEL',
+        splitPricingInformationList: [],
+        groupingMap: {},
+        seamen: true,
+        fareSourceCode: 'TEST',
+        pricingMessage: 'Test flight 3',
+        pricingInformation: {}
+      }
+    ];
+
+    console.log('Using mock flight results:', mockResults);
+    this.flightResults = mockResults;
+    this.filterResults();
+    this.loading = false;
+
+    // Comment out the HTTP call for now
+    /*
     this.http.get<FlightItinerary[]>('assets/FlightItineraryList.json').pipe(
       map(results => {
+        console.log('Flight results loaded:', results);
         this.flightResults = results;
         this.filterResults();
         this.loading = false;
@@ -67,11 +169,14 @@ export class ResultsComponent implements OnInit {
         return of([]);
       })
     ).subscribe();
+    */
   }
 
   private filterResults() {
+    console.log('filterResults called');
     if (!this.searchCriteria) {
       this.filteredResults = this.flightResults;
+      console.log('No search criteria, using all results:', this.filteredResults.length);
       return;
     }
 
@@ -93,6 +198,7 @@ export class ResultsComponent implements OnInit {
 
     // Limit results for performance
     this.filteredResults = this.filteredResults.slice(0, 50);
+    console.log('Filtered results:', this.filteredResults.length);
   }
 
   private hasStops(itinerary: FlightItinerary): boolean {
@@ -146,5 +252,181 @@ export class ResultsComponent implements OnInit {
 
   trackByResult(index: number, result: FlightItinerary): number {
     return result.id;
+  }
+
+  // Test method to ensure popup works
+  testPopup() {
+    console.log('testPopup called');
+    console.log('Current showPopup state:', this.showPopup);
+    console.log('Current filteredResults:', this.filteredResults);
+    
+    // Create a test flight
+    this.selectedFlight = {
+      id: 999,
+      airline: 'Test Airline',
+      flightNumber: 'TEST 123',
+      departureTime: '10:00',
+      departureAirport: 'BOM',
+      departureTerminal: 'Terminal 1',
+      departureDate: 'Mon, 25-Aug-2025',
+      arrivalTime: '12:00',
+      arrivalAirport: 'DEL',
+      arrivalTerminal: 'Terminal 2',
+      arrivalDate: 'Mon, 25-Aug-2025',
+      duration: '02h 00m',
+      layover: 'Non-stop',
+      layoverDuration: '0h 0m',
+      price: '€299',
+      stops: 0
+    };
+    
+    console.log('Test flight created:', this.selectedFlight);
+    this.showPopup = true;
+    console.log('showPopup set to:', this.showPopup);
+    
+    // Force change detection
+    setTimeout(() => {
+      console.log('After timeout - showPopup:', this.showPopup);
+    }, 100);
+  }
+
+  // Modify search methods
+  toggleModifySearch() {
+    console.log('toggleModifySearch called, current state:', this.showModifySearch);
+    this.showModifySearch = !this.showModifySearch;
+    console.log('showModifySearch now:', this.showModifySearch);
+  }
+
+  // Popup methods
+  openFlightDetails(flight: any) {
+    console.log('openFlightDetails called with flight:', flight);
+    console.log('filteredResults length:', this.filteredResults.length);
+    
+    // Create a simple flight details object
+    this.selectedFlight = {
+      id: flight.id || 1,
+      airline: 'IndiGo',
+      flightNumber: '6E 762',
+      departureTime: '06:00',
+      departureAirport: this.searchCriteria?.fromAirport || 'BOM',
+      departureTerminal: 'Terminal 2',
+      departureDate: 'Fri, 29-Aug-2025',
+      arrivalTime: '07:55',
+      arrivalAirport: this.searchCriteria?.toAirport || 'DEL',
+      arrivalTerminal: 'Terminal 1',
+      arrivalDate: 'Fri, 29-Aug-2025',
+      duration: '01h 55m',
+      layover: 'Non-stop',
+      layoverDuration: '0h 0m',
+      price: '€349',
+      stops: 0
+    };
+    
+    console.log('selectedFlight created:', this.selectedFlight);
+    this.showPopup = true;
+    console.log('showPopup set to:', this.showPopup);
+    
+    // Force change detection
+    setTimeout(() => {
+      console.log('After timeout - showPopup:', this.showPopup);
+    }, 100);
+  }
+
+  closePopup() {
+    this.showPopup = false;
+    this.selectedFlight = null;
+    this.showEmailModal = false;
+    this.showWhatsAppModal = false;
+    this.emailAddress = '';
+    this.phoneNumber = '';
+  }
+
+  onPopupOverlayClick(event: Event) {
+    // Close popup if clicking on the overlay (not the content)
+    if (event.target === event.currentTarget) {
+      this.closePopup();
+    }
+  }
+
+  // Share methods
+  copyToClipboard() {
+    if (this.selectedFlight) {
+      const itineraryText = this.generateItineraryText();
+      navigator.clipboard.writeText(itineraryText).then(() => {
+        // You could add a toast notification here
+        console.log('Itinerary copied to clipboard');
+        alert('Itinerary copied to clipboard!');
+      }).catch(err => {
+        console.error('Failed to copy to clipboard:', err);
+        alert('Failed to copy to clipboard. Please try again.');
+      });
+    }
+  }
+
+  showEmailInput() {
+    this.showEmailModal = true;
+  }
+
+  sendEmail() {
+    if (this.emailAddress && this.selectedFlight) {
+      const subject = encodeURIComponent('Flight Itinerary Details');
+      const body = encodeURIComponent(this.generateItineraryText());
+      const mailtoLink = `mailto:${this.emailAddress}?subject=${subject}&body=${body}`;
+      window.open(mailtoLink);
+      this.showEmailModal = false;
+      this.emailAddress = '';
+    } else if (!this.emailAddress) {
+      alert('Please enter an email address');
+    }
+  }
+
+  showWhatsAppInput() {
+    this.showWhatsAppModal = true;
+  }
+
+  sendWhatsApp() {
+    if (this.phoneNumber && this.selectedFlight) {
+      const text = encodeURIComponent(this.generateItineraryText());
+      // Remove any non-numeric characters from phone number
+      const cleanPhone = this.phoneNumber.replace(/\D/g, '');
+      const whatsappLink = `https://wa.me/${cleanPhone}?text=${text}`;
+      window.open(whatsappLink, '_blank');
+      this.showWhatsAppModal = false;
+      this.phoneNumber = '';
+    } else if (!this.phoneNumber) {
+      alert('Please enter a phone number');
+    }
+  }
+
+  private generateItineraryText(): string {
+    if (!this.selectedFlight) return '';
+    
+    return `Flight Itinerary Details
+
+Airline: ${this.selectedFlight.airline}
+Flight Number: ${this.selectedFlight.flightNumber}
+
+Departure:
+Time: ${this.selectedFlight.departureTime}
+Airport: ${this.selectedFlight.departureAirport} (${this.selectedFlight.departureTerminal})
+Date: ${this.selectedFlight.departureDate}
+
+Arrival:
+Time: ${this.selectedFlight.arrivalTime}
+Airport: ${this.selectedFlight.arrivalAirport} (${this.selectedFlight.arrivalTerminal})
+Date: ${this.selectedFlight.arrivalDate}
+
+Duration: ${this.selectedFlight.duration}
+Layover: ${this.selectedFlight.layover}
+Price: ${this.selectedFlight.price}`;
+  }
+
+  // Navigation methods
+  goToMyBookings() {
+    alert('My Bookings feature will be available soon!');
+  }
+
+  goToCrewTracking() {
+    alert('Crew Tracking feature will be available soon!');
   }
 }

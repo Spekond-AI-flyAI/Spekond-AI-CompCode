@@ -13,6 +13,59 @@
   }
 }
 
+/* Popup styles */
+.flight-popup {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.flight-popup-content {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Popup overlay */
+.popup-overlay {
+  backdrop-filter: blur(4px);
+}
+
+/* Popup close button hover effect */
+.popup-close-btn:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+/* Action button hover effects */
+.action-btn:hover {
+  border-color: #DC2626;
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}
+
+/* Share button hover effects */
+.share-btn:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
 /* Hover effects for flight cards */
 .flight-card:hover {
   transform: translateY(-2px);
