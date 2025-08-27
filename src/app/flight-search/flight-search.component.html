@@ -282,12 +282,17 @@
                     <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
                   </svg>
                 </div>
-                <select [(ngModel)]="pair.origin"
-                        (change)="onCityPairOriginChange(i)"
-                        class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                  <option value="" disabled selected class="text-gray-500">Select Origin</option>
-                  <option *ngFor="let iataCode of uniqueIataCodes" [value]="iataCode">{{ iataCode }}</option>
-                </select>
+                <input type="text"
+                       [(ngModel)]="pair.origin"
+                       (ngModelChange)="onCityPairOriginChange(i)"
+                       [matAutocomplete]="autoFromMulti"
+                       placeholder="Type origin (e.g., BOM, Mumbai)"
+                       class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                <mat-autocomplete #autoFromMulti="matAutocomplete" autoActiveFirstOption>
+                  <mat-option *ngFor="let a of (airportService.getAirportSuggestions(pair.origin) | async)" [value]="a.split(' - ')[0]">
+                    {{ a }}
+                  </mat-option>
+                </mat-autocomplete>
               </div>
               <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -295,11 +300,16 @@
                     <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
                   </svg>
                 </div>
-                <select [(ngModel)]="pair.destination"
-                        class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-                  <option value="" disabled selected class="text-gray-500">Select Destination</option>
-                  <option *ngFor="let iataCode of getAvailableDestinationCodesForPair(i)" [value]="iataCode">{{ iataCode }}</option>
-                </select>
+                <input type="text"
+                       [(ngModel)]="pair.destination"
+                       [matAutocomplete]="autoToMulti"
+                       placeholder="Type destination (e.g., DEL, Delhi)"
+                       class="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+                <mat-autocomplete #autoToMulti="matAutocomplete" autoActiveFirstOption>
+                  <mat-option *ngFor="let a of (airportService.getAirportSuggestions(pair.destination) | async)" [value]="a.split(' - ')[0]">
+                    {{ a }}
+                  </mat-option>
+                </mat-autocomplete>
               </div>
             </div>
 
@@ -385,16 +395,30 @@
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Airlines</label>
           <input type="text" 
-                 [formControlName]="'preferredAirline'"
-                 placeholder="Enter airline name"
+                 [ngModel]="flightSearchForm.get('preferredAirline')?.value"
+                 (ngModelChange)="flightSearchForm.patchValue({preferredAirline: $event})"
+                 [matAutocomplete]="autoAirline"
+                 placeholder="Type airline (e.g., AI, Air India)"
                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+          <mat-autocomplete #autoAirline="matAutocomplete" autoActiveFirstOption>
+            <mat-option *ngFor="let a of (airportService.getAirportSuggestions(flightSearchForm.get('preferredAirline')?.value) | async)" [value]="a.split(' - ')[0]">
+              {{ a }}
+            </mat-option>
+          </mat-autocomplete>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">Transit Airport</label>
           <input type="text" 
-                 [formControlName]="'transitAirport'"
-                 placeholder="Enter transit airport"
+                 [ngModel]="flightSearchForm.get('transitAirport')?.value"
+                 (ngModelChange)="flightSearchForm.patchValue({transitAirport: $event})"
+                 [matAutocomplete]="autoTransit"
+                 placeholder="Type transit (e.g., DXB, Dubai)"
                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+          <mat-autocomplete #autoTransit="matAutocomplete" autoActiveFirstOption>
+            <mat-option *ngFor="let a of (airportService.getAirportSuggestions(flightSearchForm.get('transitAirport')?.value) | async)" [value]="a.split(' - ')[0]">
+              {{ a }}
+            </mat-option>
+          </mat-autocomplete>
         </div>
       </div>
 

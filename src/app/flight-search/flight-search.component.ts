@@ -130,7 +130,7 @@ export class FlightSearchComponent implements OnInit {
   }
 
   private setupAirportAutocomplete() {
-    // Autocomplete setup removed - now using dropdowns with IATA codes
+    // Using AirportService for live suggestions via template async pipe
   }
 
   private setDefaultDates() {

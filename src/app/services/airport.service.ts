@@ -58,7 +58,7 @@ export class AirportService {
   }
 
   searchAirports(query: string): Observable<Airport[]> {
-    if (!query || query.length < 2) {
+    if (!query || query.length < 1) {
       return of([]);
     }
 
