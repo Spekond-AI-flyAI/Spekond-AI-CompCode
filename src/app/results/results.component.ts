@@ -50,6 +50,21 @@ export class ResultsComponent implements OnInit {
   loading = true;
   error = false;
   
+  // Pagination
+  currentPage = 1;
+  pageSize = 10;
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.filteredResults.length / this.pageSize));
+  }
+  get paginatedResults(): FlightItinerary[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredResults.slice(start, start + this.pageSize);
+  }
+  setPage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+  }
+  
   // Popup properties
   showPopup = false;
   selectedFlight: FlightDetails | null = null;
@@ -132,27 +147,29 @@ export class ResultsComponent implements OnInit {
     if (!this.searchCriteria) {
       this.filteredResults = this.flightResults;
       console.log('No search criteria, using all results:', this.filteredResults.length);
+      this.currentPage = 1;
       return;
     }
 
-    // Simple filtering based on search criteria
-    // In a real application, you would implement more sophisticated filtering logic
+    // Base filters
     this.filteredResults = this.flightResults.filter(itinerary => {
-      // Basic filtering - you can enhance this based on your specific requirements
-      if (this.searchCriteria!.filters.nonStop && this.hasStops(itinerary)) {
-        return false;
-      }
-      
-      if (this.searchCriteria!.filters.refundable && !this.isRefundable(itinerary)) {
-        return false;
-      }
-
-      // Add more filtering logic as needed
+      // Stops filter
+      if (!this.passesStopsFilter(itinerary)) return false;
+      // Fare filter
+      if (!this.passesFareFilter(itinerary)) return false;
+      // Duration filter
+      if (!this.passesDurationFilter(itinerary)) return false;
+      // Departure/Arrival time filters
+      if (!this.passesTimeFilters(itinerary)) return false;
+      // Airline filter
+      if (!this.passesAirlineFilter(itinerary)) return false;
+      // Transit airport filter
+      if (!this.passesTransitAirportFilter(itinerary)) return false;
       return true;
     });
 
-    // Show all results
     console.log('Filtered results (all):', this.filteredResults.length);
+    this.currentPage = 1;
   }
 
   private hasStops(itinerary: FlightItinerary): boolean {
@@ -165,6 +182,167 @@ export class ResultsComponent implements OnInit {
     // Implement logic to check if itinerary is refundable
     // This is a placeholder - implement based on your data structure
     return true;
+  }
+
+  // ----- Filter state and helpers -----
+  stopFilters = {
+    nonStop: false,
+    oneStop: false,
+    onePlus: false
+  };
+  fareMin = 0;
+  fareMax = Infinity as any as number;
+  durationMinMin = 0; // minutes
+  durationMaxMin = Infinity as any as number; // minutes
+  depMinMinutes = 0; // 0..1439
+  depMaxMinutes = 1439;
+  arrMinMinutes = 0;
+  arrMaxMinutes = 1439;
+  selectedAirlines = new Set<string>();
+  selectedTransitAirports = new Set<string>();
+
+  private getNested<T = any>(obj: any, path: (string|number)[], defaultValue: any = undefined): T | any {
+    try {
+      return path.reduce((acc: any, key: any) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj) ?? defaultValue;
+    } catch {
+      return defaultValue;
+    }
+  }
+
+  private getFirstLeg(itin: any): any | null {
+    // Attempt to get journeyList[0] from first item inside groupingMap
+    const groupingMap = itin?.groupingMap;
+    if (groupingMap && typeof groupingMap === 'object') {
+      const firstKey = Object.keys(groupingMap)[0];
+      const firstArray = groupingMap[firstKey];
+      const firstItem = Array.isArray(firstArray) ? firstArray[0] : null;
+      const journey = this.getNested(firstItem, ['journeyList', 0], null);
+      return journey;
+    }
+    // Some rows may store journeyList directly
+    return this.getNested(itin, ['journeyList', 0], null);
+  }
+
+  private getAirSegments(itin: any): any[] {
+    const leg = this.getFirstLeg(itin);
+    const segs = this.getNested(leg, ['airSegmentList'], []);
+    return Array.isArray(segs) ? segs : [];
+  }
+
+  private computeStops(itin: any): number | null {
+    const leg = this.getFirstLeg(itin);
+    const stops = this.getNested(leg, ['noOfStops'], null);
+    if (typeof stops === 'number') return stops;
+    const segs = this.getAirSegments(itin);
+    if (segs.length > 0) return Math.max(0, segs.length - 1);
+    return null;
+  }
+
+  private computeFare(itin: any): number | null {
+    // Try pricingInformation.totalPriceValue in top-level or nested item
+    const direct = this.getNested(itin, ['pricingInformation', 'totalPriceValue'], null);
+    if (typeof direct === 'number') return direct;
+    const groupingMap = itin?.groupingMap;
+    if (groupingMap && typeof groupingMap === 'object') {
+      const firstKey = Object.keys(groupingMap)[0];
+      const firstArray = groupingMap[firstKey];
+      const firstItem = Array.isArray(firstArray) ? firstArray[0] : null;
+      const nested = this.getNested(firstItem, ['pricingInformation', 'totalPriceValue'], null);
+      if (typeof nested === 'number') return nested;
+    }
+    return null;
+  }
+
+  private computeDurationMinutes(itin: any): number | null {
+    const leg = this.getFirstLeg(itin);
+    const millis = this.getNested(leg, ['travelTimeMillis'], null);
+    if (typeof millis === 'number') return Math.round(millis / 60000);
+    return null;
+  }
+
+  private firstDepartureMinutesOfDay(itin: any): number | null {
+    const segs = this.getAirSegments(itin);
+    if (segs.length === 0) return null;
+    const dep = segs[0]?.departureTime;
+    const d = dep ? new Date(dep) : null;
+    if (!d || isNaN(d.getTime())) return null;
+    return d.getHours() * 60 + d.getMinutes();
+  }
+
+  private finalArrivalMinutesOfDay(itin: any): number | null {
+    const segs = this.getAirSegments(itin);
+    const last = segs[segs.length - 1];
+    if (!last) return null;
+    const arr = last?.arrivalTime;
+    const d = arr ? new Date(arr) : null;
+    if (!d || isNaN(d.getTime())) return null;
+    return d.getHours() * 60 + d.getMinutes();
+  }
+
+  private extractAirlines(itin: any): string[] {
+    const segs = this.getAirSegments(itin);
+    const codes = new Set<string>();
+    segs.forEach(s => {
+      const code = s?.carrierCode || s?.operatingCarrierCode;
+      if (code) codes.add(code);
+    });
+    return Array.from(codes);
+  }
+
+  private extractTransitAirports(itin: any): string[] {
+    const segs = this.getAirSegments(itin);
+    if (segs.length <= 1) return [];
+    // intermediate toLocation codes
+    const mid: string[] = [];
+    for (let i = 0; i < segs.length - 1; i++) {
+      const code = segs[i]?.toLocation;
+      if (code) mid.push(code);
+    }
+    return Array.from(new Set(mid));
+  }
+
+  // Filter predicate helpers
+  private passesStopsFilter(itin: any): boolean {
+    const anyStopSelected = this.stopFilters.nonStop || this.stopFilters.oneStop || this.stopFilters.onePlus;
+    if (!anyStopSelected) return true;
+    const stops = this.computeStops(itin);
+    if (stops === null) return true;
+    if (stops === 0 && this.stopFilters.nonStop) return true;
+    if (stops === 1 && this.stopFilters.oneStop) return true;
+    if (stops >= 2 && this.stopFilters.onePlus) return true;
+    return false;
+  }
+
+  private passesFareFilter(itin: any): boolean {
+    const fare = this.computeFare(itin);
+    if (fare === null) return true;
+    return fare >= this.fareMin && fare <= this.fareMax;
+  }
+
+  private passesDurationFilter(itin: any): boolean {
+    const dur = this.computeDurationMinutes(itin);
+    if (dur === null) return true;
+    return dur >= this.durationMinMin && dur <= this.durationMaxMin;
+  }
+
+  private passesTimeFilters(itin: any): boolean {
+    const dMin = this.firstDepartureMinutesOfDay(itin);
+    const aMin = this.finalArrivalMinutesOfDay(itin);
+    const depOk = dMin === null || (dMin >= this.depMinMinutes && dMin <= this.depMaxMinutes);
+    const arrOk = aMin === null || (aMin >= this.arrMinMinutes && aMin <= this.arrMaxMinutes);
+    return depOk && arrOk;
+  }
+
+  private passesAirlineFilter(itin: any): boolean {
+    if (this.selectedAirlines.size === 0) return true;
+    const codes = this.extractAirlines(itin);
+    return codes.some(c => this.selectedAirlines.has(c));
+  }
+
+  private passesTransitAirportFilter(itin: any): boolean {
+    if (this.selectedTransitAirports.size === 0) return true;
+    const mids = this.extractTransitAirports(itin);
+    return mids.some(c => this.selectedTransitAirports.has(c));
   }
 
   getTotalPassengers(): number {
