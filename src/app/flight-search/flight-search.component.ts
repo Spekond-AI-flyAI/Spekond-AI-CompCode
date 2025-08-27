@@ -65,6 +65,11 @@ export class FlightSearchComponent implements OnInit {
 
   // Airport data
   airports: Airport[] = [];
+  // Synchronous suggestion buffers (ensures options render reliably)
+  fromSuggestions: string[] = [];
+  toSuggestions: string[] = [];
+  airlineSuggestions: string[] = [];
+  transitSuggestions: string[] = [];
   
   // Unique, sorted IATA codes for dropdowns
   uniqueIataCodes: string[] = [];
@@ -131,6 +136,35 @@ export class FlightSearchComponent implements OnInit {
 
   private setupAirportAutocomplete() {
     // Using AirportService for live suggestions via template async pipe
+  }
+
+  // ---- Suggestion helpers ----
+  private filterAirportDisplays(term: string): string[] {
+    if (!term) return [];
+    const q = term.toLowerCase().trim();
+    const results = this.airports.filter(a =>
+      (a.iata_code && a.iata_code.toLowerCase().includes(q)) ||
+      (a.city_name && a.city_name.toLowerCase().includes(q)) ||
+      (a.airport_name && a.airport_name.toLowerCase().includes(q)) ||
+      (a.country && a.country.toLowerCase().includes(q))
+    ).slice(0, 10);
+    return results.map(a => this.airportService.formatAirportDisplay(a));
+  }
+
+  onFromInput(value: string) {
+    this.fromSuggestions = this.filterAirportDisplays(value);
+  }
+
+  onToInput(value: string) {
+    this.toSuggestions = this.filterAirportDisplays(value);
+  }
+
+  onAirlineInput(value: string) {
+    this.airlineSuggestions = this.filterAirportDisplays(value);
+  }
+
+  onTransitInput(value: string) {
+    this.transitSuggestions = this.filterAirportDisplays(value);
   }
 
   private setDefaultDates() {
