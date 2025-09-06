@@ -78,6 +78,9 @@ export class FlightSearchComponent implements OnInit {
   private cachedDestinationCodes: string[] = [];
   private cachedOrigin: string = '';
   
+  // Recent searches
+  recentSearches: any[] = [];
+  
   // Multicity trip management
   cityPairs: Array<{
     origin: string;
@@ -112,6 +115,7 @@ export class FlightSearchComponent implements OnInit {
     this.setupAirportAutocomplete();
     this.setDefaultDates();
     this.loadAirports();
+    this.loadRecentSearches();
   }
 
   private loadAirports() {
@@ -160,27 +164,11 @@ export class FlightSearchComponent implements OnInit {
   }
 
   onAirlineInput(value: string) {
-    if (!value || value.length < 2) {
-      this.airlineSuggestions = [];
-      return;
-    }
-    const q = value.toLowerCase().trim();
-    const airlines = ['Air India (AI)', 'Vistara (UK)', 'IndiGo (6E)', 'Saudia (SV)', 'Emirates (EK)', 'Qatar Airways (QR)', 'Etihad (EY)', 'Turkish Airlines (TK)'];
-    this.airlineSuggestions = airlines.filter(airline => 
-      airline.toLowerCase().includes(q)
-    );
+    this.airlineSuggestions = this.filterAirportDisplays(value);
   }
 
   onTransitInput(value: string) {
-    if (!value || value.length < 2) {
-      this.transitSuggestions = [];
-      return;
-    }
-    const q = value.toLowerCase().trim();
-    const transitAirports = ['Dubai (DXB)', 'Abu Dhabi (AUH)', 'Doha (DOH)', 'Istanbul (IST)', 'Frankfurt (FRA)', 'Paris (CDG)', 'London (LHR)', 'Singapore (SIN)'];
-    this.transitSuggestions = transitAirports.filter(airport => 
-      airport.toLowerCase().includes(q)
-    );
+    this.transitSuggestions = this.filterAirportDisplays(value);
   }
 
   private setDefaultDates() {
@@ -281,8 +269,22 @@ export class FlightSearchComponent implements OnInit {
   }
 
   getAvailableDestinationCodes(): string[] {
-    // Return all codes - no dependency on nationality or origin
-    return this.uniqueIataCodes;
+    const selectedOrigin = this.flightSearchForm.get('fromAirport')?.value;
+    
+    // Return all codes if no origin selected
+    if (!selectedOrigin) {
+      return this.uniqueIataCodes;
+    }
+    
+    // Use cached result if origin hasn't changed
+    if (this.cachedOrigin === selectedOrigin && this.cachedDestinationCodes.length > 0) {
+      return this.cachedDestinationCodes;
+    }
+    
+    // Filter and cache the result
+    this.cachedOrigin = selectedOrigin;
+    this.cachedDestinationCodes = this.uniqueIataCodes.filter(code => code !== selectedOrigin);
+    return this.cachedDestinationCodes;
   }
 
   getMinArrivalDate(): string {
@@ -330,8 +332,26 @@ export class FlightSearchComponent implements OnInit {
   }
 
   getAvailableDestinationCodesForPair(pairIndex: number): string[] {
-    // Return all codes - no dependency on nationality or other pairs
-    return this.uniqueIataCodes;
+    const currentPair = this.cityPairs[pairIndex];
+    const selectedOrigin = currentPair.origin;
+    
+    if (!selectedOrigin) {
+      return this.uniqueIataCodes;
+    }
+    
+    // Create a Set of used origins for faster lookup
+    const usedOrigins = new Set<string>();
+    usedOrigins.add(selectedOrigin);
+    
+    // Add origins from other pairs
+    for (let i = 0; i < this.cityPairs.length; i++) {
+      if (i !== pairIndex && this.cityPairs[i].origin) {
+        usedOrigins.add(this.cityPairs[i].origin);
+      }
+    }
+    
+    // Filter using Set for better performance
+    return this.uniqueIataCodes.filter(code => !usedOrigins.has(code));
   }
 
   onCityPairOriginChange(pairIndex: number) {
@@ -382,6 +402,9 @@ export class FlightSearchComponent implements OnInit {
         searchCriteria.cityPairs = [...this.cityPairs];
       }
 
+      // Save to recent searches
+      this.saveRecentSearch(searchCriteria);
+
       // Store search criteria in service
       this.searchService.setSearchCriteria(searchCriteria);
       
@@ -414,5 +437,67 @@ export class FlightSearchComponent implements OnInit {
       }
     }
     return '';
+  }
+
+  // Recent search methods
+  private loadRecentSearches() {
+    const stored = localStorage.getItem('recentSearches');
+    if (stored) {
+      try {
+        this.recentSearches = JSON.parse(stored);
+      } catch (e) {
+        this.recentSearches = [];
+      }
+    }
+  }
+
+  private saveRecentSearch(searchCriteria: SearchCriteria) {
+    const searchData = {
+      ...searchCriteria,
+      timestamp: new Date().toISOString()
+    };
+
+    // Remove if already exists
+    this.recentSearches = this.recentSearches.filter(s => 
+      !(s.fromAirport === searchData.fromAirport && 
+        s.toAirport === searchData.toAirport && 
+        s.departureDate === searchData.departureDate)
+    );
+
+    // Add to beginning
+    this.recentSearches.unshift(searchData);
+
+    // Keep only last 20 searches to avoid too many records
+    this.recentSearches = this.recentSearches.slice(0, 20);
+
+    // Save to localStorage
+    localStorage.setItem('recentSearches', JSON.stringify(this.recentSearches));
+  }
+
+  loadRecentSearch(search: any) {
+    this.flightSearchForm.patchValue({
+      fromAirport: search.fromAirport,
+      toAirport: search.toAirport,
+      departureDate: search.departureDate,
+      returnDate: search.returnDate,
+      class: search.class,
+      preferredAirline: search.preferredAirline,
+      transitAirport: search.transitAirport,
+      nationality: search.nationality
+    });
+
+    this.selectedTripType = search.tripType;
+    this.selectedPassengerType = search.passengerType;
+    this.passengerCounts = { ...search.passengers };
+    this.filters = { ...search.filters };
+
+    if (search.cityPairs) {
+      this.cityPairs = [...search.cityPairs];
+    }
+  }
+
+  removeRecentSearch(index: number) {
+    this.recentSearches.splice(index, 1);
+    localStorage.setItem('recentSearches', JSON.stringify(this.recentSearches));
   }
 }

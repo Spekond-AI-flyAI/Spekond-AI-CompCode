@@ -71,12 +71,27 @@ export class ResultsComponent implements OnInit {
   
   // Modify search properties
   showModifySearch = false;
+  modifySearchForm = {
+    tripType: 'One Way',
+    fromAirport: '',
+    toAirport: '',
+    departureDate: '',
+    class: 'Economy',
+    passengers: {
+      adult: 1,
+      child: 0,
+      infant: 0
+    }
+  };
   
   // Share properties
   showEmailModal = false;
   showWhatsAppModal = false;
   emailAddress = '';
   phoneNumber = '';
+  
+  // Selected flights for sharing
+  selectedFlights = new Set<string>();
 
   constructor(
     private http: HttpClient,
@@ -532,7 +547,64 @@ export class ResultsComponent implements OnInit {
   toggleModifySearch() {
     console.log('toggleModifySearch called, current state:', this.showModifySearch);
     this.showModifySearch = !this.showModifySearch;
+    
+    if (this.showModifySearch && this.searchCriteria) {
+      // Populate modify form with current search criteria
+      this.modifySearchForm = {
+        tripType: this.searchCriteria.tripType || 'One Way',
+        fromAirport: this.searchCriteria.fromAirport || '',
+        toAirport: this.searchCriteria.toAirport || '',
+        departureDate: this.searchCriteria.departureDate ? 
+          (typeof this.searchCriteria.departureDate === 'string' ? 
+            this.searchCriteria.departureDate : 
+            this.searchCriteria.departureDate.toISOString().split('T')[0]) : '',
+        class: this.searchCriteria.class || 'Economy',
+        passengers: {
+          adult: this.searchCriteria.passengers?.adult || 1,
+          child: this.searchCriteria.passengers?.child || 0,
+          infant: this.searchCriteria.passengers?.infant || 0
+        }
+      };
+    }
+    
     console.log('showModifySearch now:', this.showModifySearch);
+  }
+
+  onModifySearch() {
+    if (this.modifySearchForm.fromAirport && this.modifySearchForm.toAirport && this.modifySearchForm.departureDate) {
+      // Create new search criteria from modify form
+      const newSearchCriteria: SearchCriteria = {
+        tripType: this.modifySearchForm.tripType,
+        fromAirport: this.modifySearchForm.fromAirport,
+        toAirport: this.modifySearchForm.toAirport,
+        departureDate: new Date(this.modifySearchForm.departureDate),
+        returnDate: null,
+        class: this.modifySearchForm.class,
+        passengers: { ...this.modifySearchForm.passengers },
+        preferredAirline: '',
+        transitAirport: '',
+        filters: {
+          refundable: false,
+          nonStop: false,
+          splitTicket: false
+        },
+        passengerType: 'seamen'
+      };
+
+      // Update search criteria in service
+      this.searchService.setSearchCriteria(newSearchCriteria);
+      
+      // Update local search criteria
+      this.searchCriteria = newSearchCriteria;
+      
+      // Close modify search form
+      this.showModifySearch = false;
+      
+      // Reload flight results with new criteria
+      this.loadFlightResults();
+    } else {
+      alert('Please fill in all required fields (From, To, Departure Date)');
+    }
   }
 
   // Popup methods
@@ -600,15 +672,17 @@ export class ResultsComponent implements OnInit {
   }
 
   sendEmail() {
-    if (this.emailAddress && this.selectedFlight) {
-      const subject = encodeURIComponent('Flight Itinerary Details');
-      const body = encodeURIComponent(this.generateItineraryText());
+    if (this.emailAddress) {
+      const subject = encodeURIComponent('Selected Flight Itineraries');
+      const body = encodeURIComponent(this.generateSelectedFlightsText());
       const mailtoLink = `mailto:${this.emailAddress}?subject=${subject}&body=${body}`;
       window.open(mailtoLink);
       this.showEmailModal = false;
       this.emailAddress = '';
     } else if (!this.emailAddress) {
       alert('Please enter an email address');
+    } else if (this.selectedFlights.size === 0) {
+      alert('Please select at least one flight to share');
     }
   }
 
@@ -617,8 +691,8 @@ export class ResultsComponent implements OnInit {
   }
 
   sendWhatsApp() {
-    if (this.phoneNumber && this.selectedFlight) {
-      const text = encodeURIComponent(this.generateItineraryText());
+    if (this.phoneNumber) {
+      const text = encodeURIComponent(this.generateSelectedFlightsText());
       // Remove any non-numeric characters from phone number
       const cleanPhone = this.phoneNumber.replace(/\D/g, '');
       const whatsappLink = `https://wa.me/${cleanPhone}?text=${text}`;
@@ -627,6 +701,8 @@ export class ResultsComponent implements OnInit {
       this.phoneNumber = '';
     } else if (!this.phoneNumber) {
       alert('Please enter a phone number');
+    } else if (this.selectedFlights.size === 0) {
+      alert('Please select at least one flight to share');
     }
   }
 
@@ -660,5 +736,66 @@ Price: ${this.selectedFlight.price}`;
 
   goToCrewTracking() {
     alert('Crew Tracking feature will be available soon!');
+  }
+
+  // Flight selection methods
+  toggleFlightSelection(flight: any) {
+    const flightId = flight.id.toString();
+    if (this.selectedFlights.has(flightId)) {
+      this.selectedFlights.delete(flightId);
+    } else {
+      this.selectedFlights.add(flightId);
+    }
+  }
+
+  copySelectedFlightsToClipboard() {
+    const text = this.generateSelectedFlightsText();
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Selected flights copied to clipboard!');
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+      alert('Failed to copy to clipboard');
+    });
+  }
+
+  generateSelectedFlightsText(): string {
+    if (this.selectedFlights.size === 0) {
+      return 'No flights selected';
+    }
+
+    let text = 'Selected Flight Itineraries:\n\n';
+    
+    this.filteredResults.forEach(flight => {
+      if (this.selectedFlights.has(flight.id.toString())) {
+        text += this.generateSingleFlightText(flight) + '\n\n';
+      }
+    });
+
+    return text;
+  }
+
+  generateSingleFlightText(flight: any): string {
+    const segs = this.getAirSegments(flight);
+    let text = `Flight: ${this.getAirlineName(flight)} ${this.getFlightNumberString(flight)}\n`;
+    text += `Route: ${this.getDepartureAirport(flight)} → ${this.getArrivalAirport(flight)}\n`;
+    text += `Departure: ${this.getDepartureTime(flight)} ${this.getDepartureDate(flight)}\n`;
+    text += `Arrival: ${this.getArrivalTime(flight)} ${this.getArrivalDate(flight)}\n`;
+    text += `Duration: ${this.getDurationText(flight)}\n`;
+    text += `Stops: ${this.getStopsText(flight)}\n`;
+    text += `Price: ${this.getFareDisplay(flight)}\n`;
+    
+    if (segs.length > 1) {
+      text += `\nFlight Details:\n`;
+      segs.forEach((seg, index) => {
+        text += `  ${index + 1}. ${seg.airline} ${seg.flightNumber}\n`;
+        text += `     ${seg.departureAirport} → ${seg.arrivalAirport}\n`;
+        text += `     ${seg.departureTime} → ${seg.arrivalTime}\n`;
+        if (index < segs.length - 1) {
+          text += `     Layover: ${seg.layoverTime}\n`;
+        }
+      });
+    }
+    
+    return text;
   }
 }

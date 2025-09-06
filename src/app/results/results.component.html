@@ -1,54 +1,54 @@
 <!-- Header Section -->
-<header class="bg-gradient-to-r from-orange-50 via-orange-100 to-orange-200 shadow-xl border-b border-orange-300/50 backdrop-blur-sm">
+<header class="bg-gradient-to-r from-gray-50 via-gray-100 to-gray-200 shadow-xl border-b border-gray-300/50 backdrop-blur-sm">
   <div class="max-w-7xl mx-auto px-6">
     <!-- Top Header -->
-    <div class="flex items-center justify-between py-6">
+    <div class="flex items-center justify-between py-4">
       <!-- Logo -->
       <div class="flex items-center group">
         <div class="text-3xl font-bold tracking-wide transition-all duration-300 group-hover:scale-105">
-          <span class="bg-gradient-to-r from-orange-600 to-orange-800 bg-clip-text text-transparent">JOCO</span>
+          <span class="bg-gradient-to-r from-gray-600 to-gray-800 bg-clip-text text-transparent">JOCO</span>
         </div>
-        <div class="ml-3 text-xs font-medium text-orange-600 tracking-wider opacity-90 transition-all duration-300 group-hover:opacity-100">
+        <div class="ml-3 text-xs font-medium text-gray-600 tracking-wider opacity-90 transition-all duration-300 group-hover:opacity-100">
           PASSION. BEYOND OCEAN.
         </div>
       </div>
       
       <!-- Navigation -->
       <nav class="flex items-center space-x-8">
-        <a href="#" class="relative text-orange-800 font-semibold tracking-wide transition-all duration-300 hover:text-orange-900 group px-3 py-2 rounded-lg hover:bg-orange-100/50">
+        <a href="#" class="relative text-gray-800 font-semibold tracking-wide transition-all duration-300 hover:text-gray-900 group px-3 py-2 rounded-lg hover:bg-gray-100/50">
           <span class="relative z-10">SEARCH</span>
-          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-600 to-orange-700 transition-all duration-300 group-hover:w-full"></span>
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-red-600 to-red-700 transition-all duration-300 group-hover:w-full"></span>
         </a>
-        <a (click)="goToMyBookings()" class="relative text-orange-700 font-medium tracking-wide transition-all duration-300 hover:text-orange-800 group cursor-pointer px-3 py-2 rounded-lg hover:bg-orange-100/50">
+        <a (click)="goToMyBookings()" class="relative text-gray-700 font-medium tracking-wide transition-all duration-300 hover:text-gray-800 group cursor-pointer px-3 py-2 rounded-lg hover:bg-gray-100/50">
           <span class="relative z-10">MY BOOKINGS</span>
-          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-orange-600 transition-all duration-300 group-hover:w-full"></span>
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-red-500 to-red-600 transition-all duration-300 group-hover:w-full"></span>
         </a>
-        <a (click)="goToCrewTracking()" class="relative text-orange-700 font-medium tracking-wide transition-all duration-300 hover:text-orange-800 group cursor-pointer px-3 py-2 rounded-lg hover:bg-orange-100/50">
+        <a (click)="goToCrewTracking()" class="relative text-gray-700 font-medium tracking-wide transition-all duration-300 hover:text-gray-800 group cursor-pointer px-3 py-2 rounded-lg hover:bg-gray-100/50">
           <span class="relative z-10">CREW TRACKING</span>
-          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-orange-600 transition-all duration-300 group-hover:w-full"></span>
+          <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-red-500 to-red-600 transition-all duration-300 group-hover:w-full"></span>
         </a>
       </nav>
       
       <!-- User Profile and Currency -->
       <div class="flex items-center space-x-6">
         <div class="flex items-center space-x-2">
-          <div class="w-8 h-8 bg-gradient-to-br from-orange-300 to-orange-400 rounded-full flex items-center justify-center shadow-md transition-all duration-300 hover:shadow-lg hover:scale-105 ring-2 ring-orange-200 hover:ring-orange-300">
-            <svg class="w-5 h-5 text-orange-700 transition-colors duration-300 group-hover:text-orange-800" fill="currentColor" viewBox="0 0 20 20">
+          <div class="w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full flex items-center justify-center shadow-md transition-all duration-300 hover:shadow-lg hover:scale-105 ring-2 ring-gray-200 hover:ring-gray-300">
+            <svg class="w-5 h-5 text-gray-700 transition-colors duration-300 group-hover:text-gray-800" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
             </svg>
           </div>
-          <span class="text-sm text-gray-700">Vaso Nikola</span>
+          <span class="text-sm text-gray-700">John Doe</span>
           <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
           </svg>
         </div>
         
-        <select class="px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+        <select class="px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
           <option>INR</option>
         </select>
         
-        <div class="w-8 h-8 bg-gradient-to-br from-orange-300 to-orange-400 rounded-full flex items-center justify-center shadow-md transition-all duration-300 hover:shadow-lg hover:scale-105 cursor-pointer group ring-2 ring-orange-200 hover:ring-orange-300">
-          <svg class="w-5 h-5 text-orange-700 transition-colors duration-300 group-hover:text-orange-800" fill="currentColor" viewBox="0 0 20 20">
+        <div class="w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full flex items-center justify-center shadow-md transition-all duration-300 hover:shadow-lg hover:scale-105 cursor-pointer group ring-2 ring-gray-200 hover:ring-gray-300">
+          <svg class="w-5 h-5 text-gray-700 transition-colors duration-300 group-hover:text-gray-800" fill="currentColor" viewBox="0 0 20 20">
             <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
           </svg>
         </div>
@@ -56,13 +56,13 @@
     </div>
     
     <!-- Progress Indicator -->
-    <div class="flex items-center space-x-6 py-4 border-t border-orange-300/30">
+    <div class="flex items-center space-x-6 py-3 border-t border-gray-300/30">
       <div class="flex items-center space-x-3">
-        <div class="w-4 h-4 bg-gradient-to-r from-orange-600 to-orange-700 rounded-full shadow-sm animate-pulse ring-2 ring-orange-200"></div>
-        <div class="w-4 h-4 bg-orange-300 rounded-full shadow-sm transition-all duration-300 ring-2 ring-orange-200/50"></div>
-        <div class="w-4 h-4 bg-orange-300 rounded-full shadow-sm transition-all duration-300 ring-2 ring-orange-200/50"></div>
+        <div class="w-4 h-4 bg-gradient-to-r from-red-600 to-red-700 rounded-full shadow-sm animate-pulse ring-2 ring-red-200"></div>
+        <div class="w-4 h-4 bg-gray-300 rounded-full shadow-sm transition-all duration-300 ring-2 ring-gray-200/50"></div>
+        <div class="w-4 h-4 bg-gray-300 rounded-full shadow-sm transition-all duration-300 ring-2 ring-gray-200/50"></div>
       </div>
-      <span class="text-sm font-medium text-orange-700 tracking-wide">Search Results</span>
+      <span class="text-sm font-medium text-gray-700 tracking-wide">Search Results</span>
     </div>
   </div>
 </header>
@@ -80,63 +80,65 @@
       </div>
 
       <!-- Search Form Content -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Trip Type -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Trip Type</label>
-          <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-            <option [value]="searchCriteria?.tripType">{{ searchCriteria?.tripType || 'ONE WAY' }}</option>
-            <option value="Round Trip">Round Trip</option>
-            <option value="Multi City">Multi City</option>
-          </select>
-        </div>
-
-        <!-- From Airport -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">From</label>
-          <input type="text" [value]="searchCriteria?.fromAirport" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-        </div>
-
-        <!-- To Airport -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">To</label>
-          <input type="text" [value]="searchCriteria?.toAirport" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-        </div>
-
-        <!-- Departure Date -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Departure Date</label>
-          <input type="date" [value]="searchCriteria?.departureDate?.toISOString().split('T')[0]" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-        </div>
-
-        <!-- Class -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Class</label>
-          <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
-            <option [value]="searchCriteria?.class">{{ searchCriteria?.class || 'ECONOMY' }}</option>
-            <option value="BUSINESS">Business</option>
-            <option value="FIRST">First</option>
-          </select>
-        </div>
-
-        <!-- Passengers -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Passengers</label>
-          <div class="flex space-x-2">
-            <input type="number" [value]="searchCriteria?.passengers?.adult" min="1" class="w-16 px-2 py-2 border border-gray-300 rounded-md text-center">
-            <input type="number" [value]="searchCriteria?.passengers?.child" min="0" class="w-16 px-2 py-2 border border-gray-300 rounded-md text-center">
-            <input type="number" [value]="searchCriteria?.passengers?.infant" min="0" class="w-16 px-2 py-2 border border-gray-300 rounded-md text-center">
+      <form (ngSubmit)="onModifySearch()">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Trip Type -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Trip Type</label>
+            <select [(ngModel)]="modifySearchForm.tripType" name="tripType" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+              <option value="One Way">One Way</option>
+              <option value="Round Trip">Round Trip</option>
+              <option value="Multi City">Multi City</option>
+            </select>
           </div>
-          <div class="text-xs text-gray-500 mt-1">Adult | Child | Infant</div>
-        </div>
-      </div>
 
-      <!-- Search Button -->
-      <div class="mt-6">
-        <button class="px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-          SEARCH FLIGHTS
-        </button>
-      </div>
+          <!-- From Airport -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">From</label>
+            <input type="text" [(ngModel)]="modifySearchForm.fromAirport" name="fromAirport" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+          </div>
+
+          <!-- To Airport -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">To</label>
+            <input type="text" [(ngModel)]="modifySearchForm.toAirport" name="toAirport" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+          </div>
+
+          <!-- Departure Date -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Departure Date</label>
+            <input type="date" [(ngModel)]="modifySearchForm.departureDate" name="departureDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+          </div>
+
+          <!-- Class -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Class</label>
+            <select [(ngModel)]="modifySearchForm.class" name="class" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500">
+              <option value="Economy">Economy</option>
+              <option value="Business">Business</option>
+              <option value="First">First</option>
+            </select>
+          </div>
+
+          <!-- Passengers -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Passengers</label>
+            <div class="flex space-x-2">
+              <input type="number" [(ngModel)]="modifySearchForm.passengers.adult" name="adult" min="1" class="w-16 px-2 py-2 border border-gray-300 rounded-md text-center">
+              <input type="number" [(ngModel)]="modifySearchForm.passengers.child" name="child" min="0" class="w-16 px-2 py-2 border border-gray-300 rounded-md text-center">
+              <input type="number" [(ngModel)]="modifySearchForm.passengers.infant" name="infant" min="0" class="w-16 px-2 py-2 border border-gray-300 rounded-md text-center">
+            </div>
+            <div class="text-xs text-gray-500 mt-1">Adult | Child | Infant</div>
+          </div>
+        </div>
+
+        <!-- Search Button -->
+        <div class="mt-6">
+          <button type="submit" class="px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+            SEARCH FLIGHTS
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -397,7 +399,10 @@
             <!-- Flight Header -->
             <div class="flex items-center justify-between mb-3">
               <div class="flex items-center space-x-3">
-                <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
+                <input type="checkbox" 
+                       [checked]="selectedFlights.has(result.id)"
+                       (change)="toggleFlightSelection(result)"
+                       class="w-4 h-4 text-red-600 border-gray-300 rounded focus:ring-red-500">
                 <div>
                   <h3 class="text-lg font-semibold text-gray-800">{{ getAirlineName(result) }}</h3>
                   <p class="text-sm text-gray-600">{{ getFlightNumberString(result) }}</p>
@@ -655,5 +660,42 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Fixed Share Buttons -->
+<div class="fixed bottom-6 right-6 z-40">
+  <div class="flex flex-col space-y-3">
+    <!-- Copy to Clipboard -->
+    <button (click)="copySelectedFlightsToClipboard()" 
+            [disabled]="selectedFlights.size === 0"
+            class="w-12 h-12 bg-red-600 text-white rounded-full shadow-lg hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 hover:shadow-xl flex items-center justify-center group"
+            title="Copy selected flights to clipboard">
+      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+        <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+      </svg>
+    </button>
+
+    <!-- Email -->
+    <button (click)="showEmailModal = true" 
+            [disabled]="selectedFlights.size === 0"
+            class="w-12 h-12 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 hover:shadow-xl flex items-center justify-center group"
+            title="Email selected flights">
+      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+      </svg>
+    </button>
+
+    <!-- WhatsApp -->
+    <button (click)="showWhatsAppModal = true" 
+            [disabled]="selectedFlights.size === 0"
+            class="w-12 h-12 bg-green-600 text-white rounded-full shadow-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 hover:shadow-xl flex items-center justify-center group"
+            title="Share selected flights via WhatsApp">
+      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+      </svg>
+    </button>
   </div>
 </div>
